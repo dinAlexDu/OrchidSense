@@ -56,7 +56,7 @@ OrchidSense is a web application that monitors environmental conditions such as 
 ![Login](OrchidSense/static/assets/screenshots/login.png)
 
 ### Dashboard - Real-Time Data Monitoring
-![Real-Time Data](static/assets/screenshots/dados_em_tempo_real.png)
+![Real-Time Data](OrchidSense/static/assets/screenshotsdados_em_tempo_real.png)
 
 ### Graphs of Temperature and Humidity Over Time
 ![Graphs - Temperature and Humidity](OrchidSense/static/assets/screenshots/dados_em_tempo_real_graficos_temp_hum.png)
@@ -106,7 +106,7 @@ The system uses a **Raspberry Pi** to interface with the DHT22 and BH1750 sensor
 
 ### Hardware Connection
 
-![Hardware Setup](path-to-hardware-image/hardware.jpg)
+![Hardware Setup](OrchidSense/static/assets/screenshots/hardware.jpg)
 
 This image shows the Raspberry Pi connected to the sensors (DHT22 and BH1750) using a breadboard and jumper wires.
 
