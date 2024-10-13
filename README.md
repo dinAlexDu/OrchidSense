@@ -56,7 +56,7 @@ OrchidSense is a web application that monitors environmental conditions such as 
 ![Login](OrchidSense/static/assets/screenshots/login.png)
 
 ### Dashboard - Real-Time Data Monitoring
-![Real-Time Data](OrchidSense/static/assets/screenshotsdados_em_tempo_real.png)
+![Real-Time Data](OrchidSense/static/assets/screenshots/dados_em_tempo_real.png)
 
 ### Graphs of Temperature and Humidity Over Time
 ![Graphs - Temperature and Humidity](OrchidSense/static/assets/screenshots/dados_em_tempo_real_graficos_temp_hum.png)
