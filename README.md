@@ -1,4 +1,4 @@
-# OrchidSense - Web App for Monitoring Environmental Conditions
+# OrchidSense - IoT Web Application for Real-Time Monitoring of Environmental Conditions
 
 ## Overview
 
@@ -53,50 +53,50 @@ OrchidSense is a web application that monitors environmental conditions such as 
 ## Screenshots
 
 ### Login Page
-![Login](static/assets/screenshots/login.png)
+![Login](OrchidSense/static/assets/screenshots/login.png)
 
 ### Dashboard - Real-Time Data Monitoring
 ![Real-Time Data](static/assets/screenshots/dados_em_tempo_real.png)
 
 ### Graphs of Temperature and Humidity Over Time
-![Graphs - Temperature and Humidity](static/assets/screenshots/dados_em_tempo_real_graficos_temp_hum.png)
+![Graphs - Temperature and Humidity](OrchidSense/static/assets/screenshots/dados_em_tempo_real_graficos_temp_hum.png)
 
 ### Graphs of Light Intensity Over Time
-![Graphs - Light Intensity](static/assets/screenshots/dados_em_tempo_real_graficos_lux.png)
+![Graphs - Light Intensity](OrchidSense/static/assets/screenshots/dados_em_tempo_real_graficos_lux.png)
 
 ### Analysis and Reports - Main Page
-![Reports Main Page](static/assets/screenshots/analises_e_relatorios_main.png)
+![Reports Main Page](OrchidSense/static/assets/screenshots/analises_e_relatorios_main.png)
 
 ### Hourly Graph for Environmental Data
-![Hourly Graph](static/assets/screenshots/analises_e_relatorios_grafico_horario.png)
+![Hourly Graph](OrchidSense/static/assets/screenshots/analises_e_relatorios_grafico_horario.png)
 
 ### Export Reports
-![Export Reports](static/assets/screenshots/analises_e_relatorios_export.png)
+![Export Reports](OrchidSense/static/assets/screenshots/analises_e_relatorios_export.png)
 
 ### Orchid Library
-![Orchid Library](static/assets/screenshotss/biblioteca_de_orquideas.png)
+![Orchid Library](OrchidSense/static/assets/screenshots/biblioteca_de_orquideas.png)
 
 ### Alerts and Notifications - List View
-![List of Alerts](static/assets/screenshots/alertas_e_notificacoes_list.png)
+![List of Alerts](OrchidSense/static/assets/screenshots/alertas_e_notificacoes_list.png)
 
 ### Alerts and Notifications - Add Configuration
-![Add Alert Configuration](path-to-screenshots/alertas_e_notificacoes_add_config.png)
+![Add Alert Configuration](OrchidSense/static/assets/screenshots/alertas_e_notificacoes_add_config.png)
 
 ### Alerts and Notifications - Edit Configuration
-![Edit Alert Configuration](static/assets/screenshots/alertas_e_notificacoes_edit.png)
+![Edit Alert Configuration](OrchidSense/static/assets/screenshots/alertas_e_notificacoes_edit.png)
 
 
 ### Device Management
-![Device Management](static/assets/screenshots/gestao_de_dispositivos.png)
+![Device Management](OrchidSense/static/assets/screenshots/gestao_de_dispositivos.png)
 
 ### User List
-![User List](static/assets/screenshots/gestao_de_utilizadores_list.png)
+![User List](OrchidSense/static/assets/screenshots/gestao_de_utilizadores_list.png)
 
 ### Add New User
-![Add User](static/assets/screenshots/gestao_de_utilizadores_add_user.png)
+![Add User](OrchidSense/static/assets/screenshots/gestao_de_utilizadores_add_user.png)
 
 ### Edit User Information
-![Edit User](static/assets/screenshots/gestao_de_utilizadores_edit_user.png)
+![Edit User](OrchidSense/static/assets/screenshots/gestao_de_utilizadores_edit_user.png)
 
 
 
