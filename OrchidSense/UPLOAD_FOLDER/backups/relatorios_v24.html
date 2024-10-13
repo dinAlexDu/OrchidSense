@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Retatórios</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.png"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script data-search-pseudo-elements defer
+            src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/js/all.min.js"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"
+            crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.3.1/dist/chartjs-adapter-luxon.umd.min.js"></script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+
+
+</head>
+<body class="nav-fixed">
+<!-- Navbar e Sidenav -->
+<nav class="topnav navbar navbar-expand shadow justify-content-between justify-content-sm-start navbar-light bg-white"
+     id="sidenavAccordion">
+    <!-- Sidenav Toggle Button-->
+    <button class="btn btn-icon btn-transparent-dark order-1 order-lg-0 me-2 ms-lg-2 me-lg-0" id="sidebarToggle"><i
+            data-feather="menu"></i></button>
+
+    <!-- Navbar Brand-->
+    <a class="navbar-brand pe-3 ps-4 ps-lg-2" href="/index"> OrchidSense </a>
+    <!-- Sidebar Toggle-->
+
+    <!-- Navbar Search Input-->
+    <form class="form-inline me-auto d-none d-lg-block me-3">
+        <div class="input-group input-group-joined input-group-solid">
+            <input class="form-control pe-0" type="search" placeholder="Pesquisar..." aria-label="Search"
+                   aria-label="Search"/>
+            <div class="input-group-text"><i data-feather="search"></i></div>
+        </div>
+    </form>
+    <!-- Navbar Items-->
+    <ul class="navbar-nav align-items-center ms-auto">
+        <!-- User Dropdown-->
+        <li class="nav-item dropdown no-caret dropdown-user me-3 me-lg-4">
+            <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownUserImage"
+               href="javascript:void(0);" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
+               aria-expanded="false"><img class="img-fluid" src="assets/img/illustrations/profiles/profile-1.png"/></a>
+            <div class="dropdown-menu dropdown-menu-end border-0 shadow animated--fade-in-up"
+                 aria-labelledby="navbarDropdownUserImage">
+                <h6 class="dropdown-header d-flex align-items-center">
+                    <img class="dropdown-user-img" src="assets/img/illustrations/profiles/profile-1.png"/>
+                    <div class="dropdown-user-details">
+                        <div class="dropdown-user-details-name">Valerie Luna</div>
+                        <div class="dropdown-user-details-email">vluna@aol.com</div>
+                    </div>
+                </h6>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#!">
+                    <div class="dropdown-item-icon"><i data-feather="settings"></i></div>
+                    Account
+                </a>
+                <a class="dropdown-item" href="#!">
+                    <div class="dropdown-item-icon"><i data-feather="log-out"></i></div>
+                    Logout
+                </a>
+            </div>
+        </li>
+    </ul>
+    <!-- Sidebar -->
+</nav>
+<div id="layoutSidenav">
+    <div id="layoutSidenav_nav">
+        <nav class="sidenav shadow-right sidenav-light">
+            <div class="sidenav-menu">
+                <div class="nav accordion" id="accordionSidenav">
+                    <!-- Sidenav Heading (Custom)-->
+                    <div class="sidenav-menu-heading">Menu</div>
+                    <!-- Sidenav Accordion (Pages)-->
+                    <a class="nav-link" href="/dashboard">
+                        <div class="nav-link-icon"><i data-feather="activity"></i></div>
+                        Dashboard
+                    </a>
+
+                    <a class="nav-link" href="/historico">
+                        <div class="nav-link-icon"><i data-feather="bar-chart"></i></div>
+                        Histórico
+                    </a>
+
+                    <a class="nav-link" href="/relatorios">
+                        <div class="nav-link-icon"><i data-feather="file-text"></i></div>
+                        Relatórios
+                    </a>
+                    <a class="nav-link" href="/biblioteca-orquideas">
+                        <div class="nav-link-icon"><i data-feather="book-open"></i></div>
+                        Biblioteca de Orquídeas
+                    </a>
+                    <a class="nav-link" href="/gestao-dispositivos">
+                        <div class="nav-link-icon"><i data-feather="box"></i></div>
+                        Gestão de Dispositivos
+                    </a>
+                    <a class="nav-link" href="/ajuda-suporte">
+                        <div class="nav-link-icon"><i data-feather="help-circle"></i></div>
+                        Ajuda e Suporte
+                    </a>
+                    <a class="nav-link" href="/notificacoes">
+                        <div class="nav-link-icon"><i data-feather="bell"></i></div>
+                        Notificações
+                    </a>
+                    <a class="nav-link" href="/logout">
+                        <div class="nav-link-icon"><i data-feather="power"></i></div>
+                        Logout
+                    </a>
+                </div>
+            </div>
+            <div class="sidenav-footer">
+                <div class="sidenav-footer-content">
+                    <div class="sidenav-footer-subtitle">Logged in as:</div>
+                    <div class="sidenav-footer-title">Valerie Luna</div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div id="layoutSidenav_content">
+        <main>
+            <!-- Cabeçalho da Página de Relatórios -->
+            <header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
+                <div class="container-xl px-4">
+                    <div class="page-header-content pt-4">
+                        <div class="row align-items-center justify-content-between">
+                            <div class="col-auto mt-4">
+                                <h1 class="page-header-title">
+                                    <div class="page-header-icon"><i data-feather="activity"></i></div>
+                                    Relatórios
+                                </h1>
+                                <div class="page-header-subtitle">Análise e relatórios do sistema.</div>
+                            </div>
+                            <div class="col-12 col-xl-auto mt-4">Conteúdo opcional do cabeçalho da página</div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- Main page content-->
+            <div class="container-xl px-4 mt-n10">
+                <!-- Colored Cards para Resumo dos Relatórios -->
+
+                <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5">
+                    <!-- Resumo Horário Card -->
+                    <div class="col">
+                        <div class="card bg-info text-white h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="me-3">
+                                        <div class="text-white-75 small">Resumo Horário</div>
+                                        <div class="text-lg fw-bold">Dados...</div>
+                                    </div>
+                                    <i class="feather-xl text-white-50" data-feather="calendar"></i>
+                                </div>
+                            </div>
+                            <div class="card-footer d-flex align-items-center justify-content-between small">
+                                <a class="text-white stretched-link"
+                                   href="javascript:toggleRelatorio('navigationCardResumoHorario')">Ver
+                                    Relatório</a>
+                                <div class="text-white"><i class="fas fa-angle-right"></i></div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Resumo Diário Card -->
+                    <div class="col">
+                        <div class="card bg-primary text-white h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="me-3">
+                                        <div class="text-white-75 small">Resumo Diário</div>
+                                        <div class="text-lg fw-bold">Dados...</div>
+                                    </div>
+                                    <i class="feather-xl text-white-50" data-feather="calendar"></i>
+                                </div>
+                            </div>
+                            <div class="card-footer d-flex align-items-center justify-content-between small">
+                                <a class="text-white stretched-link"
+                                   href="javascript:toggleRelatorio('navigationCardResumoDiario')">Ver
+                                    Relatório</a>
+                                <div class="text-white"><i class="fas fa-angle-right"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Resumo Semanal Card -->
+
+                    <div class="col">
+                        <div class="card bg-warning text-white h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="me-3">
+                                        <div class="text-white-75 small">Resumo Semanal</div>
+                                        <div class="text-lg fw-bold">Dados...</div>
+                                    </div>
+                                    <i class="feather-xl text-white-50" data-feather="calendar"></i>
+                                </div>
+                            </div>
+                            <div class="card-footer d-flex align-items-center justify-content-between small">
+                                <a class="text-white stretched-link"
+                                   href="javascript:toggleRelatorio('navigationCardResumoSemanal')">Ver
+                                    Relatório</a>
+
+                                <div class="text-white"><i class="fas fa-angle-right"></i></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resumo Mensal Card-->
+                    <div class="col">
+                        <div class="card bg-success text-white h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="me-3">
+                                        <div class="text-white-75 small">Resumo Mensal</div>
+                                        <div class="text-lg fw-bold">Temp. Média: 22°C, Humidade Média: 55%</div>
+                                    </div>
+                                    <i class="feather-xl text-white-50" data-feather="calendar"></i>
+                                </div>
+                            </div>
+                            <div class="card-footer d-flex align-items-center justify-content-between small">
+                                <a class="text-white stretched-link"
+                                   href="javascript:toggleRelatorio('navigationCardResumoMensal')">Ver
+                                    Relatório</a>
+                                <div class="text-white"><i class="fas fa-angle-right"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Resumo Anual Card -->
+                    <div class="col">
+                        <div class="card bg-danger text-white h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="me-3">
+                                        <div class="text-white-75 small">Resumo Anual</div>
+                                        <div class="text-lg fw-bold">Dados...</div>
+                                    </div>
+                                    <i class="feather-xl text-white-50" data-feather="calendar"></i>
+                                </div>
+                            </div>
+                            <div class="card-footer d-flex align-items-center justify-content-between small">
+                                <a class="text-white stretched-link"
+                                   href="javascript:toggleRelatorio('navigationCardResumoAnual')">Ver
+                                    Relatório</a>
+                                <div class="text-white"><i class="fas fa-angle-right"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Card para Resumo Horário (fora dos cartoes) -->
+                <div id="navigationCardResumoHorario" class="card" style="display:none;">
+                    <div class="card-header border-bottom">
+                        <!-- Tabs para alternar entre Gráfico e Tabela -->
+                        <ul class="nav nav-tabs card-header-tabs" id="resumoHorarioTabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="grafico-tab" href="#graficoResumoHorario"
+                                   data-bs-toggle="tab" role="tab" aria-controls="graficoResumoHorario"
+                                   aria-selected="true">Gráfico Horário</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="tabela-tab" href="#tabelaResumoHorario" data-bs-toggle="tab"
+                                   role="tab" aria-controls="tabelaResumoHorario" aria-selected="false">Tabela
+                                    Horária</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <!-- Conteúdo das Tabs -->
+                        <div class="tab-content" id="resumoHorarioContent">
+                            <!-- Pane do Gráfico -->
+                            <div class="tab-pane fade show active" id="graficoResumoHorario" role="tabpanel"
+                                 aria-labelledby="grafico-tab">
+                                <!-- Aqui você inicializa e exibe o gráfico de linha para o resumo Semanal -->
+                                <div class="card mb-4">
+                                    <div class="card-header">Temperatura</div>
+                                    <div class="card-body">
+                                        <div class="chart-area">
+                                            <canvas id="temperaturaHorarioChart" width="100%" height="50"></canvas>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                                </div>
+                                <div class="card mb-4">
+                                    <div class="card-header">Humidade</div>
+                                    <div class="card-body">
+                                        <div class="chart-area">
+                                            <canvas id="humidadeHorarioChart" width="100%" height="30"></canvas>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                                </div>
+                            </div>
+
+
+                            <!-- Pane da Tabela Horario -->
+                            <div class="tab-pane fade" id="tabelaResumoHorario" role="tabpanel"
+                                 aria-labelledby="tabela-tab">
+
+
+                                <!-- Aqui você inclui a tabela de relatório horário existente -->
+
+                                <!-- Tabela de Relatório Horário -->
+
+                                <div class="card card-header-actions">
+                                    <div class="card-header d-flex justify-content-end">
+                                        <div class="dropdown">
+                                            <button class="btn btn-primary dropdown-toggle"
+                                                    id="dropdownMenuButton"
+                                                    type="button" data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">Exportar
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="javascript:void(0);"
+                                                   onclick="exportTableToExcel('idTabelaResumoHorario', 'resumo_horario')">Exportar
+                                                    para Excel (.xlsx)</a>
+                                                <a class="dropdown-item" href="javascript:void(0);"
+                                                   onclick="exportTableToPDF('idTabelaResumoHorario', 'resumo_horario.pdf')">Exportar
+                                                    para PDF (.pdf)</a>
+                                                <a class="dropdown-item" href="javascript:void(0);"
+                                                   onclick="exportTableToCSV('resumo_horario.csv', 'idTabelaResumoHorario')">Exportar
+                                                    para CSV (.csv)</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="card-body">
+                                        <table class="table table-bordered" id="idTabelaResumoHorario">
+                                            <thead>
+                                            <tr>
+                                                <th>Hora</th>
+                                                <th>Temp. Máx. (°C)</th>
+                                                <th>Temp. Mín. (°C)</th>
+                                                <th>Temp. Méd. (°C)</th>
+                                                <th>Hum. Máx. (%)</th>
+                                                <th>Hum. Mín. (%)</th>
+                                                <th>Hum. Méd. (%)</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for dado in dados_resumo_horario %}
+                                                <tr>
+                                                    <td>{{ dado['hora'] }}</td>
+                                                    <td>{{ dado['temp_maxima'] }}</td>
+                                                    <td>{{ dado['temp_minima'] }}</td>
+                                                    <td>{{ dado['temp_media'] | round(2) }}</td>
+                                                    <td>{{ dado['hum_maxima'] }}</td>
+                                                    <td>{{ dado['hum_minima'] }}</td>
+                                                    <td>{{ dado['hum_media'] | round(2) }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Card para Resumo Diário (fora dos cartoes) -->
+                <div id="navigationCardResumoDiario" class="card" style="display:none;">
+                    <div class="card-header border-bottom">
+                        <!-- Tabs para alternar entre Gráfico e Tabela -->
+                        <ul class="nav nav-tabs card-header-tabs" id="resumoDiarioTabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="grafico-tab" href="#graficoResumoDiario"
+                                   data-bs-toggle="tab" role="tab" aria-controls="graficoResumoDiario"
+                                   aria-selected="true">Gráfico Diário</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="tabela-tab" href="#tabelaResumoDiario" data-bs-toggle="tab"
+                                   role="tab" aria-controls="tabelaResumoDiario" aria-selected="false">Tabela Diária</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <!-- Conteúdo das Tabs -->
+                        <div class="tab-content" id="resumoDiarioContent">
+                            <!-- Pane do Gráfico -->
+                            <div class="tab-pane fade show active" id="graficoResumoDiario" role="tabpanel"
+                                 aria-labelledby="grafico-tab">
+                                <!-- Aqui você inicializa e exibe o gráfico de linha para o resumo Diario -->
+                                <div class="card mb-4">
+                                    <div class="card-header">Temperatura</div>
+                                    <div class="card-body">
+                                        <div class="chart-area">
+                                            <canvas id="temperaturaDiarioChart" width="100%" height="30"></canvas>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                                </div>
+                                <div class="card mb-4">
+                                    <div class="card-header">Humidade</div>
+                                    <div class="card-body">
+                                        <div class="chart-area">
+                                            <canvas id="humidadeDiarioChart" width="100%" height="30"></canvas>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                                </div>
+                            </div>
+
+
+                            <!-- Pane da Tabela Diário-->
+                            <div class="tab-pane fade" id="tabelaResumoDiario" role="tabpanel"
+                                 aria-labelledby="tabela-tab">
+                                <!-- Aqui você inclui a tabela de relatório Diario existente -->
+
+                                <!-- Tabela de Relatório Diário -->
+
+                                <div class="card card-header-actions">
+                                    <div class="card-header">
+                                        Acções
+                                        <button class="btn btn-primary btn-sm"
+                                                onclick="exportTableToCSV('resumo_diario.csv', 'idTabelaResumoDiario')">
+                                            Exportar CSV
+                                        </button>
+
+                                        <button class="btn btn-secondary btn-sm"
+                                                onclick="exportTableToPDF('idTabelaResumoDiario', 'resumo_diario.pdf')">
+                                            Exportar PDF
+                                        </button>
+                                        <button class="btn btn-success btn-sm"
+                                                onclick="exportTableToExcel('idTabelaResumoDiario', 'resumo_diario')">
+                                            Exportar Excel
+                                        </button>
+
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-bordered" id="idTabelaResumoDiario">
+                                            <thead>
+                                            <tr>
+                                                <th>Data</th>
+                                                <th>Temp. Máx. (°C)</th>
+                                                <th>Temp. Mín. (°C)</th>
+                                                <th>Temp. Méd. (°C)</th>
+                                                <th>Hum. Máx. (%)</th>
+                                                <th>Hum. Mín. (%)</th>
+                                                <th>Hum. Méd. (%)</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for dado in dados_resumo_diario %}
+                                                <tr>
+                                                    <td>{{ dado.dia }}</td>
+                                                    <td>{{ dado.temp_maxima }}</td>
+                                                    <td>{{ dado.temp_minima }}</td>
+                                                    <td>{{ dado.temp_media | round(2) }}</td>
+                                                    <td>{{ dado.hum_maxima }}</td>
+                                                    <td>{{ dado.hum_minima }}</td>
+                                                    <td>{{ dado.hum_media | round(2) }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Card para Resumo Semanal (fora dos cartoes) -->
+                <div id="navigationCardResumoSemanal" class="card" style="display:none;">
+                    <div class="card-header border-bottom">
+                        <!-- Tabs para alternar entre Gráfico e Tabela -->
+                        <ul class="nav nav-tabs card-header-tabs" id="resumoSemanalTabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="grafico-tab" href="#graficoResumoSemanal"
+                                   data-bs-toggle="tab" role="tab" aria-controls="graficoResumoSemanal"
+                                   aria-selected="true">Gráfico Semanal</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="tabela-tab" href="#tabelaResumoSemanal" data-bs-toggle="tab"
+                                   role="tab" aria-controls="tabelaResumoSemanal" aria-selected="false">Tabela
+                                    Semanal</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <!-- Conteúdo das Tabs -->
+                        <div class="tab-content" id="resumoSemanalContent">
+                            <!-- Pane do Gráfico -->
+                            <div class="tab-pane fade show active" id="graficoResumoSemanal" role="tabpanel"
+                                 aria-labelledby="grafico-tab">
+                                <!-- Aqui você inicializa e exibe o gráfico de linha para o resumo Semanal -->
+                                <div class="card mb-4">
+                                    <div class="card-header">Temperatura</div>
+                                    <div class="card-body">
+                                        <div class="chart-area">
+                                            <canvas id="temperaturaSemanalChart" width="100%" height="30"></canvas>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                                </div>
+                                <div class="card mb-4">
+                                    <div class="card-header">Humidade</div>
+                                    <div class="card-body">
+                                        <div class="chart-area">
+                                            <canvas id="humidadeSemanalChart" width="100%" height="30"></canvas>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                                </div>
+                            </div>
+                            <!-- Pane da Tabela Semanal-->
+                            <div class="tab-pane fade" id="tabelaResumoSemanal" role="tabpanel"
+                                 aria-labelledby="tabela-tab">
+                                <!-- Aqui você inclui a tabela de relatório Semanal existente -->
+                                <!-- Tabela de Relatório Semanal -->
+
+                                <div class="card card-header-actions">
+                                    <div class="card-header">
+                                        Acções
+                                        <button class="btn btn-primary btn-sm"
+                                                onclick="exportTableToCSV('resumo_semanal.csv', 'idTabelaResumoSemanal')">
+                                            Exportar CSV
+                                        </button>
+                                        <button class="btn btn-primary btn-sm"
+                                                onclick="exportTableToPDF('idTabelaResumoSemanal', 'resumo_semanal.pdf')">
+                                            Exportar PDF
+                                        </button>
+                                        <button class="btn btn-success btn-sm"
+                                                onclick="exportTableToExcel('idTabelaResumoSemanal', 'resumo_semanal')">
+                                            Exportar Excel
+                                        </button>
+                                    </div>
+
+
+                                    <div class="card-body">
+                                        <table class="table table-bordered" id="idTabelaResumoSemanal">
+                                            <thead>
+                                            <tr>
+                                                <th>Semana</th>
+                                                <th>Temp. Máx. (°C)</th>
+                                                <th>Temp. Mín. (°C)</th>
+                                                <th>Temp. Méd. (°C)</th>
+                                                <th>Hum. Máx. (%)</th>
+                                                <th>Hum. Mín. (%)</th>
+                                                <th>Hum. Méd. (%)</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for dado in dados_resumo_semanal %}
+                                                <tr>
+                                                    <td>{{ dado.semana }}</td>
+                                                    <td>{{ dado.temp_maxima }}</td>
+                                                    <td>{{ dado.temp_minima }}</td>
+                                                    <td>{{ dado.temp_media | round(2) }}</td>
+                                                    <td>{{ dado.hum_maxima }}</td>
+                                                    <td>{{ dado.hum_minima }}</td>
+                                                    <td>{{ dado.hum_media | round(2) }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Navigation Card para Resumo Mensal (fora dos cartoes) -->
+                <div id="navigationCardResumoMensal" class="card" style="display:none;">
+                    <div class="card-header border-bottom">
+                        <!-- Tabs para alternar entre Gráfico e Tabela -->
+                        <ul class="nav nav-tabs card-header-tabs" id="resumoMensalTabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="grafico-tab" href="#graficoResumoMensal"
+                                   data-bs-toggle="tab" role="tab" aria-controls="graficoResumoMensal"
+                                   aria-selected="true">Gráfico Mensal</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="tabela-tab" href="#tabelaResumoMensal" data-bs-toggle="tab"
+                                   role="tab" aria-controls="tabelaResumoMensal" aria-selected="false">Tabela Mensal</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <!-- Conteúdo das Tabs -->
+                        <div class="tab-content" id="resumoMensalContent">
+                            <!-- Pane do Gráfico -->
+                            <div class="tab-pane fade show active" id="graficoResumoMensal" role="tabpanel"
+                                 aria-labelledby="grafico-tab">
+                                <!-- Aqui você inicializa e exibe o gráfico de linha para o resumo Mensal -->
+                                <div class="card mb-4">
+                                    <div class="card-header">Temperatura</div>
+                                    <div class="card-body">
+                                        <div class="chart-area">
+                                            <canvas id="temperaturaMensalChart" width="100%" height="30"></canvas>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                                </div>
+                                <div class="card mb-4">
+                                    <div class="card-header">Humidade</div>
+                                    <div class="card-body">
+                                        <div class="chart-area">
+                                            <canvas id="humidadeMensalChart" width="100%" height="30"></canvas>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                                </div>
+                            </div>
+                            <!-- Pane da Tabela Mensal-->
+                            <div class="tab-pane fade" id="tabelaResumoMensal" role="tabpanel"
+                                 aria-labelledby="tabela-tab">
+
+
+                                <!-- Aqui você inclui a tabela de relatório Mensal existente -->
+                                <!-- Tabela de Relatório Mensal -->
+
+
+                                <div class="card card-header-actions">
+                                    <div class="card-header">
+                                        Acções
+                                        <button class="btn btn-primary btn-sm"
+                                                onclick="exportTableToCSV('resumo_mensal.csv', 'idTabelaResumoMensal')">
+                                            Exportar CSV
+                                        </button>
+                                        <button class="btn btn-secondary btn-sm"
+                                                onclick="exportTableToPDF('idTabelaResumoMensal', 'resumo_mensal.pdf')">
+                                            Exportar PDF
+                                        </button>
+                                        <button class="btn btn-success btn-sm"
+                                                onclick="exportTableToExcel('idTabelaResumoMensal', 'resumo_mensal')">
+                                            Exportar Excel
+                                        </button>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-bordered" id="idTabelaResumoMensal">
+                                            <thead>
+                                            <tr>
+                                                <th>Mês</th>
+                                                <th>Temp. Máx. (°C)</th>
+                                                <th>Temp. Mín. (°C)</th>
+                                                <th>Temp. Méd. (°C)</th>
+                                                <th>Hum. Máx.(%)</th>
+                                                <th>Hum. Mín. (%)</th>
+                                                <th>Hum. Méd. (%)</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for dado in dados_resumo_mensal %}
+                                                <tr>
+                                                    <td>{{ dado.mes }}</td>
+                                                    <td>{{ dado.temp_maxima }}</td>
+                                                    <td>{{ dado.temp_minima }}</td>
+                                                    <td>{{ dado.temp_media | round(2) }}</td>
+                                                    <td>{{ dado.hum_maxima }}</td>
+                                                    <td>{{ dado.hum_minima }}</td>
+                                                    <td>{{ dado.hum_media | round(2) }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Navigation Card para Resumo Anual (fora dos cartoes) -->
+                <div id="navigationCardResumoAnual" class="card" style="display:none;">
+                    <div class="card-header border-bottom">
+                        <!-- Tabs para alternar entre Gráfico e Tabela -->
+                        <ul class="nav nav-tabs card-header-tabs" id="resumoAnualTabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="grafico-tab" href="#graficoResumoAnual"
+                                   data-bs-toggle="tab" role="tab" aria-controls="graficoResumoAnual"
+                                   aria-selected="true">Gráfico Anual</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="tabela-tab" href="#tabelaResumoAnual" data-bs-toggle="tab"
+                                   role="tab" aria-controls="tabelaResumoAnual" aria-selected="false">Tabela Anual</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <!-- Conteúdo das Tabs -->
+                        <div class="tab-content" id="resumoMensalContent">
+                            <!-- Pane do Gráfico -->
+                            <div class="tab-pane fade show active" id="graficoResumoAnual" role="tabpanel"
+                                 aria-labelledby="grafico-tab">
+                                <!-- Aqui você inicializa e exibe o gráfico de linha para o resumo Anual -->
+                                <div class="card mb-4">
+                                    <div class="card-header">Temperatura</div>
+                                    <div class="card-body">
+                                        <div class="chart-area">
+                                            <canvas id="temperaturaAnualChart" width="100%" height="30"></canvas>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                                </div>
+                                <div class="card mb-4">
+                                    <div class="card-header">Humidade</div>
+                                    <div class="card-body">
+                                        <div class="chart-area">
+                                            <canvas id="humidadeAnualChart" width="100%" height="30"></canvas>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                                </div>
+                            </div>
+                            <!-- Pane da Tabela Anual-->
+                            <div class="tab-pane fade" id="tabelaResumoAnual" role="tabpanel"
+                                 aria-labelledby="tabela-tab">
+                                <!-- Aqui você inclui a tabela de relatório Mensal existente -->
+                                <!-- Tabela de Relatório Anual -->
+                                <div class="card card-header-actions">
+                                    <div class="card-header">
+                                        Acções
+                                        <button class="btn btn-primary btn-sm"
+                                                onclick="exportTableToCSV('resumo_anual.csv', 'idTabelaResumoAnual')">
+                                            Exportar CSV
+                                        </button>
+                                        <button class="btn btn-secondary btn-sm"
+                                                onclick="exportTableToPDF('idTabelaResumoAnual', 'resumo_anual.pdf')">
+                                            Exportar PDF
+                                        </button>
+                                        <button class="btn btn-success btn-sm"
+                                                onclick="exportTableToExcel('idTabelaResumoAnual', 'resumo_anual')">
+                                            Exportar Excel
+                                        </button>
+                                    </div>
+
+
+                                    <div class="card-body">
+                                        <table class="table table-bordered" id="idTabelaResumoAnual">
+                                            <thead>
+                                            <tr>
+                                                <th>Ano</th>
+                                                <th>Temp. Máx. (°C)</th>
+                                                <th>Temp. Mín. (°C)</th>
+                                                <th>Temp. Méd. (°C)</th>
+                                                <th>Hum. Máx. (%)</th>
+                                                <th>Hum. Mín. (%)</th>
+                                                <th>Hum. Méd. (%)</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for dado in dados_resumo_anual %}
+                                                <tr>
+                                                    <td>{{ dado['ano'] }}</td>
+                                                    <td>{{ dado['temp_maxima'] }}</td>
+                                                    <td>{{ dado['temp_minima'] }}</td>
+                                                    <td>{{ dado['temp_media'] | round(2) }}</td>
+                                                    <td>{{ dado['hum_maxima'] }}</td>
+                                                    <td>{{ dado['hum_minima'] }}</td>
+                                                    <td>{{ dado['hum_media'] | round(2) }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </main>
+
+
+        <!-- Footer -->
+        <footer class="footer-admin mt-auto footer-light">
+            <div class="container-xl px-4">
+                <div class="row">
+                    <div class="col-md-6 small">Copyright &copy; OrchidSense 2024</div>
+                    <div class="col-md-6 text-md-end small">
+                        <a href="#!">Privacy Policy</a>
+                        &middot;
+                        <a href="#!">Terms &amp; Conditions</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+            crossorigin="anonymous"></script>
+    <!-- Substitua 'caminho/para/seu/js/scripts.js' pelo caminho correto do seu arquivo scripts.js -->
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+            crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/datatables/datatables-simple.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/chart-area.js') }}"></script>
+    {#    <script src="{{ url_for('static', filename='js/chart-bar.js') }}"></script>#}
+    {#    <script src="{{ url_for('static', filename='js/chart-pie.js') }}"></script>#}
+
+
+    <script>
+        function toggleRelatorio(id) {
+            var card = document.getElementById(id); // Substitua pelo ID do seu Navigation Card
+            if (card.style.display === "none") {
+                card.style.display = "block"; // Mostra o Navigation Card
+            } else {
+                card.style.display = "none"; // Esconde o Navigation Card
+            }
+        }
+    </script>
+
+
+    <script>
+        function exportTableToCSV(filename, tableId) {
+            console.log("Selector:", "#" + tableId + " tr"); // Adicione esta linha para diagnóstico
+
+            var csv = [];
+            var rows = document.querySelectorAll("#" + tableId + " tr");
+
+            for (var i = 0; i < rows.length; i++) {
+                var row = [], cols = rows[i].querySelectorAll("td, th");
+
+                for (var j = 0; j < cols.length; j++)
+                    row.push('"' + cols[j].innerText + '"');
+
+                csv.push(row.join(","));
+            }
+
+            // Chama a função downloadCSV para efetivamente criar o arquivo e iniciar o download
+            downloadCSV(csv.join("\n"), filename);
+        }
+
+        function downloadCSV(csv, filename) {
+            var csvFile;
+            var downloadLink;
+
+            // Cria um arquivo CSV
+            csvFile = new Blob([csv], {type: "text/csv"});
+
+            // Cria um link para download
+            downloadLink = document.createElement("a");
+
+            // Define o nome do arquivo
+            downloadLink.download = filename;
+
+            // Cria um link para o arquivo
+            downloadLink.href = window.URL.createObjectURL(csvFile);
+
+            // Esconde o link de download
+            downloadLink.style.display = "none";
+
+            // Adiciona o link ao DOM
+            document.body.appendChild(downloadLink);
+
+            // Clica no link de download
+            downloadLink.click();
+        }
+    </script>
+    <script>
+        function exportTableToPDF(tableId, filename) {
+            const element = document.getElementById(tableId); // Seleciona a tabela pelo ID
+            html2pdf().set({html2canvas: {scale: 4}}).from(element).save(filename);
+        }
+    </script>
+
+    <script>
+
+        function exportTableToExcel(tableId, filename = '') {
+            // Pega a tabela HTML
+            let table = document.getElementById(tableId);
+            let ws = XLSX.utils.table_to_sheet(table); // Converte a tabela para um "worksheet" do Excel
+
+            // Cria um novo "workbook" (planilha do Excel) e adiciona o "worksheet"
+            let wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+
+            // Define o nome do arquivo
+            filename = filename ? filename + '.xlsx' : 'excel_sheet.xlsx';
+
+            // Usa a função `writeFile` da SheetJS para salvar o workbook
+            XLSX.writeFile(wb, filename);
+        }
+
+    </script>
+</body>
+</html>
+
+

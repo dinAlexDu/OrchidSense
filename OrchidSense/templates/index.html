@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags for responsive design and character encoding -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content="Plataforma OrchidSense. Um sistema de monitorização de condições ambientais em tempo real com Raspberry Pi e sensores DHT22 e BH1750."/>
+    <meta name="author" content="OrchidSense"/>
+    <!-- Page title -->
+    <title>OrchidSense - Home</title>
+
+    <!-- External CSS and JS libraries -->
+    <!-- Custom stylesheet for this app -->
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.png') }}"/>
+
+    <!-- Font Awesome and Feather Icons for UI components -->
+    <script data-search-pseudo-elements defer
+            src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/js/all.min.js"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"
+            crossorigin="anonymous"></script>
+
+</head>
+<body class="nav-fixed">
+    <!-- Navigation bar: Provides links to navigate through the website -->
+<nav class="topnav navbar navbar-expand shadow justify-content-between justify-content-sm-start navbar-light bg-white"
+     id="sidenavAccordion">
+    <!-- Sidenav Toggle Button-->
+    <button class="btn btn-icon btn-transparent-dark order-1 order-lg-0 me-2 ms-lg-2 me-lg-0" id="sidebarToggle"><i
+            data-feather="menu"></i></button>
+
+    <!-- Navbar Brand-->
+    <a class="navbar-brand pe-3 ps-4 ps-lg-2" href="/index"> OrchidSense </a>
+    <!-- Sidebar Toggle-->
+
+    <!-- Search bar in the navigation-->
+    <form class="form-inline me-auto d-none d-lg-block me-3">
+        <div class="input-group input-group-joined input-group-solid">
+            <input class="form-control pe-0" type="search" placeholder="Pesquisar..." aria-label="Search"
+                   aria-label="Search"/>
+            <div class="input-group-text"><i data-feather="search"></i></div>
+        </div>
+    </form>
+    <!-- User Profile and Logout Dropdown-->
+    <ul class="navbar-nav align-items-center ms-auto">
+        <!-- User Dropdown-->
+        <li class="nav-item dropdown no-caret dropdown-user me-3 me-lg-4">
+            <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownUserImage"
+               href="javascript:void(0);" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
+               aria-expanded="false">
+                <!-- Display user profile image -->
+                <img class="img-fluid"
+                     src="{{ url_for('static', filename='assets/img/illustrations/profiles/' + current_user.profile_image) }}">
+            </a>
+            <div class="dropdown-menu dropdown-menu-end border-0 shadow animated--fade-in-up"
+                 aria-labelledby="navbarDropdownUserImage">
+                <!-- Display user details (name, email) -->
+                <h6 class="dropdown-header d-flex align-items-center">
+                    <img class="dropdown-user-img"
+                         src="{{ url_for('static', filename='assets/img/illustrations/profiles/' + current_user.profile_image) }}"/>
+                    <div class="dropdown-user-details">
+                        <div class="dropdown-user-details-name">{{ current_user.first_name }} {{ current_user.last_name }}</div>
+                        <div class="dropdown-user-details-email">{{ current_user.email }}</div>
+                    </div>
+                </h6>
+                <div class="dropdown-divider"></div>
+                <!-- Account and Logout links -->
+                <a class="dropdown-item" href="#!">
+                    <div class="dropdown-item-icon"><i data-feather="settings"></i></div>
+                    Conta
+                </a>
+                <a class="dropdown-item" href="{{ url_for('logout') }}">
+                    <div class="dropdown-item-icon"><i data-feather="log-out"></i></div>
+                    Sair
+                </a>
+            </div>
+        </li>
+    </ul>
+    <!-- Sidebar -->
+</nav>
+<div id="layoutSidenav">
+    <div id="layoutSidenav_nav">
+        <nav class="sidenav shadow-right sidenav-light">
+            <div class="sidenav-menu">
+                <!-- Sidebar navigation menu -->
+                <div class="nav accordion" id="accordionSidenav">
+                    <!-- Main menu section -->
+                    <div class="sidenav-menu-heading">Menu</div>
+                    <!-- Link to Dashboard -->
+                    <a class="nav-link" href="/dashboard">
+                        <div class="nav-link-icon"><i data-feather="activity"></i></div>
+                        INDEX
+                    </a>
+                    <!-- Link to Historical Data page -->
+                    <a class="nav-link" href="/historico">
+                        <div class="nav-link-icon"><i data-feather="bar-chart"></i></div>
+                        Histórico
+                    </a>
+                    <!-- Link to Reports and Analysis page -->
+                    <a class="nav-link" href="/relatorios">
+                        <div class="nav-link-icon"><i data-feather="file-text"></i></div>
+                        Análise e Relatórios
+                    </a>
+                    <!-- Link to Orchid Library -->
+                    <a class="nav-link" href="/biblioteca-orquideas">
+                        <div class="nav-link-icon"><i data-feather="book-open"></i></div>
+                        Biblioteca de Orquídeas
+                    </a>
+                    <!-- Admin-only links (Device Management and User Management) -->
+                    {% if current_user.is_admin %}
+                    <a class="nav-link" href="/gestao-dispositivos">
+                        <div class="nav-link-icon"><i data-feather="box"></i></div>
+                        Gestão de Dispositivos
+                    </a>
+                    {% endif %}
+                    {% if current_user.is_admin %}
+                        <a class="nav-link" href="/gestao-utilizadores">
+                            <div class="nav-link-icon"><i
+                                    data-feather="user-check"></i></div>
+                            Gestão de Utilizadores
+                        </a>
+                    {% endif %}
+                    <!-- Notifications and Alerts link -->
+                    <a class="nav-link" href="/notificacoes">
+                        <div class="nav-link-icon"><i data-feather="bell"></i></div>
+                        Notificações e Alertas
+                    </a>
+                    <!-- Logout link -->
+                    <a class="nav-link" href="/logout">
+                        <div class="nav-link-icon"><i data-feather="power"></i></div>
+                        Sair
+                    </a>
+                </div>
+            </div>
+            <!-- Sidebar footer: Shows logged-in user's email -->
+            <div class="sidenav-footer">
+                <div class="sidenav-footer-content">
+                    <div class="sidenav-footer-subtitle">Início de sessão com:</div>
+                    <div class="sidenav-footer-title">{{ current_user.email }}</div>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Main Content Area -->
+    <div id="layoutSidenav_content">
+        <main>
+            <!-- Header section -->
+            <header class="py-10 mb-4 bg-gradient-primary-to-secondary">
+                <div class="container-xl px-4">
+                    <div class="text-center">
+                        <h1 class="text-white">Bem vindo a OrchidSense</h1>
+                        <p class="lead mb-0 text-white-50">Um sistema de monitorização de condições ambientais em tempo
+                            real
+                            com Raspberry Pi e sensores DHT22 e BH1750</p>
+                    </div>
+                </div>
+            </header>
+            <!-- Main page content-->
+        </main>
+    </div>
+</div>
+
+<!-- External JavaScript files -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+<script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>
+
+

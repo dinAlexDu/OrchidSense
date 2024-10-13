@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <title>Dashboard de Temperatura</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+<style>
+        /* Aplicar a fonte Raleway a um seletor específico */
+        .raleway-text {
+            font-family: 'Raleway', sans-serif;
+        }
+    </style>
+
+</head>
+<body>
+    <!-- Área Principal -->
+    <main class="content">
+        <!-- Menu Vertical à Esquerda -->
+        <nav class="vertical-menu">
+            <ul>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/historico">Histórico</a></li>
+                <li><a href="/notificacoes">Notificações</a></li>
+                <li><a href="/perfil">Perfil</a></li>
+                <li><a href="/logout">Logout</a></li>
+                <li><a href="/labenv">Lab</a></li>
+            </ul>
+        </nav>
+
+        <!-- Dashboard -->
+        <div id="dashboard">
+            <h2>Dashboard de Temperaturas</h2>
+            <div class="current-data">
+                <h2>Dados em tempo real:</h2>
+                <h1>Temperatura: <span id="temp-placeholder">A aguardar dados...</span></h1>
+                <h1>Humidade: <span id="humidity-placeholder">A aguardar dados...</span></h1>
+                <p>Os dados são actualizados de 10 em 10 segundos.</p>
+            </div>
+        </div>
+    </main>
+
+<!-- Adicione o código JavaScript aqui -->
+<script>
+    // Suponha que você queira atualizar os valores assim que a página for carregada
+    // Substitua os valores abaixo pelos valores reais do sensor, se necessário
+    var temperatura = {{ temperatura|tojson|safe }};
+    var humidade = {{ humidade|tojson|safe }};
+    // Função para atualizar os valores na página
+    function atualizarValores(temperatura, humidade) {
+        document.getElementById("temp-placeholder").textContent = temperatura.toFixed(2) + " °C";
+        document.getElementById("humidity-placeholder").textContent = humidade.toFixed(2) + " %";
+    }
+
+
+    atualizarValores(temperatura, humidade);
+</script>
+
+
+</body>
+</html>

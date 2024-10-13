@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histórico de Temperaturas</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Inclua a biblioteca Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.3.1/dist/chartjs-adapter-luxon.umd.min.js"></script>
+
+</head>
+<body>
+    <!-- Área Principal -->
+    <main class="content">
+        <!-- Menu Vertical à Esquerda (Você pode copiar o menu do dashboard.html) -->
+        <nav class="vertical-menu">
+            <ul>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/historico">Histórico de Temperaturas</a></li>
+                <li><a href="/notificacoes">Notificações</a></li>
+                <li><a href="/perfil">Perfil do Usuário</a></li>
+                <li><a href="/logout">Logout</a></li>
+                <li><a href="/labenv">Lab</a></li>
+            </ul>
+        </nav>
+
+        <!-- Histórico de Temperaturas -->
+        <div id="historico">
+            <h1>Histórico de Temperaturas</h1>
+
+            <!-- Formulário para filtrar por datas -->
+            <form action="/historico" method="post">
+                <label for="data_inicio">Data de Início:</label>
+                <input type="date" id="data_inicio" name="data_inicio">
+
+                <label for="data_fim">Data de Fim:</label>
+                <input type="date" id="data_fim" name="data_fim">
+
+                <input type="submit" value="Filtrar">
+            </form>
+
+            <!-- Seção para o gráfico -->
+            <div class="chart-container">
+                TESTE
+                <canvas id="historico-chart" width="600" height="400"></canvas>
+            </div>
+
+
+
+            <!-- Lista das últimas temperaturas e Humidade -->
+            <div class="historico-dados">
+                <h2>Últimas Temperaturas e Humidade</h2>
+                <ul>
+                    <!-- Aqui você pode usar um loop para exibir os dados históricos -->
+                    {% for dado in dados %}
+                        <li>Data: {{ dado.data.strftime('%Y-%m-%d %H:%M:%S') }}, Temperatura: {{ dado.temperatura|round(2) }} °C, Humidade: {{ dado.humidade|round(2) }} %</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </main>
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Defina uma variável JavaScript global com os dados do histórico
+        var dados = {{ dados|tojson|safe }};
+        console.log("Dados Recebidos:", dados); // Adicione isso para depurar
+
+        // Obter uma referência ao elemento de gráfico de histórico
+        var historicoChart = document.getElementById("historico-chart").getContext("2d");
+
+        // Extrair as datas e temperaturas dos dados
+        var datas = [];
+        var temperaturas = [];
+
+        {% for dado in dados %}
+            // Corrija o formato da string da data e hora para o formato ISO 8601
+            var dataHoraStr = "{{ dado.data }}";
+            var dataHoraStrISO = dataHoraStr.replace(" ", "T");
+
+            var dataHora = luxon.DateTime.fromISO(dataHoraStrISO);
+            console.log("Data Formatada", dataHora);
+            datas.push(dataHora);
+            temperaturas.push({{ dado.temperatura }});
+        {% endfor %}
+
+
+{#        {% for dado in dados %}
+            var dataHora = luxon.DateTime.fromISO("{{ dado.data }}");
+            console.log("Data Formatada", dataHora);
+            datas.push(dataHora);
+            temperaturas.push({{ dado.temperatura }});
+        {% endfor %}#}
+
+        console.log("Datas Formatadas:", datas);
+
+        // Criar um gráfico de linha
+        var chart = new Chart(historicoChart, {
+            type: "line",
+            data: {
+                labels: datas.map(function (data) {
+                    return data.toISO();
+                }), // Use as datas no eixo X
+                datasets: [
+                    {
+                        label: "Temperatura (°C)",
+                        data: temperaturas,
+                        borderColor: "rgba(255, 99, 132, 0.2)", // Vermelho claro com transparência
+                        backgroundColor: "rgba(0, 0, 255, 0.2)",
+                        fill: false,
+                        tension: 0.4, // Define a tensão da linha (maior valor para uma linha mais curva)
+                        {#pointRadius: 0, // Define o tamanho dos pontos como zero#}
+                    },
+                ],
+            },
+            options: {
+                responsive: false,
+                maintainAspectRatio: true,
+                scales: {
+                    x: {
+                        type: "time", // Especifica que as datas estão no eixo X
+                        time: {
+                            unit: 'hour',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Tempo',
+                        },
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Graus (°C)',
+                        },
+                    },
+                },
+            },
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

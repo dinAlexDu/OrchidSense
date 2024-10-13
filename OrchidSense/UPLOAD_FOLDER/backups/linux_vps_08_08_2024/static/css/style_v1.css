@@ -1,0 +1,65 @@
+/* Estilo do menu vertical */
+.vertical-menu {
+    width: 250px;
+    background-color: #333;
+    padding-top: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    overflow-x: hidden;
+    transition: 0.2s;
+}
+
+.vertical-menu ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.vertical-menu ul li {
+    margin: 0;
+    padding: 0;
+}
+
+.vertical-menu ul li a {
+    display: block;
+    padding: 16px;
+    color: white;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.vertical-menu ul li a:hover {
+    background-color: #555;
+}
+
+/* Estilo da área principal */
+.content {
+    margin-left: 250px; /* A largura do menu vertical */
+    padding: 20px;
+}
+/* Aplicar a fonte Raleway a todos os elementos de texto */
+body, p, h1, h2, h3, h4, h5, h6 {
+    font-family: 'Raleway', sans-serif;
+}
+/* Estilo da coluna da esquerda */
+.column-left {
+    float: left; /* Alinha à esquerda */
+    width: 50%; /* Define a largura para 50% da largura do conteúdo principal */
+    padding: 20px; /* Adicione algum espaçamento interno */
+    box-sizing: border-box; /* Inclui preenchimento e borda na largura total */
+}
+
+/* Estilo da coluna da direita (gráfico) */
+.column-right {
+    float: left; /* Alinha à esquerda */
+    width: 50%; /* Define a largura para 50% da largura do conteúdo principal */
+    padding: 20px; /* Adicione algum espaçamento interno */
+    box-sizing: border-box; /* Inclui preenchimento e borda na largura total */
+}
+
+/* Estilo para o conteúdo principal que envolve as colunas */
+.main-content {
+    overflow: hidden; /* Para lidar com a altura das colunas flutuantes */
+}
+

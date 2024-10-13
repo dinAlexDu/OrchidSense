@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content="Dinis Duarte"/>
+    <title>OrchidSense</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.png') }}"/>
+    <script data-search-pseudo-elements defer
+            src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/js/all.min.js"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"
+            crossorigin="anonymous"></script>
+</head>
+<body class="nav-fixed">
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+
+<!-- Navbar -->
+<nav class="topnav navbar navbar-expand shadow justify-content-between justify-content-sm-start navbar-light bg-white"
+     id="sidenavAccordion">
+    <!-- Sidenav Toggle Button-->
+    <button class="btn btn-icon btn-transparent-dark order-1 order-lg-0 me-2 ms-lg-2 me-lg-0" id="sidebarToggle"><i
+            data-feather="menu"></i></button>
+
+    <!-- Navbar Brand-->
+    <a class="navbar-brand pe-3 ps-4 ps-lg-2" href="/index"> OrchidSense </a>
+    <!-- Sidebar Toggle-->
+
+
+    <!-- Navbar Items-->
+    <ul class="navbar-nav align-items-center ms-auto">
+        <!-- User Dropdown-->
+        <li class="nav-item dropdown no-caret dropdown-user me-3 me-lg-4">
+            <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownUserImage"
+               href="javascript:void(0);" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
+               aria-expanded="false">
+                <img class="img-fluid"
+                     src="{{ url_for('static', filename='assets/img/illustrations/profiles/' + current_user.profile_image) }}">
+            </a>
+            <div class="dropdown-menu dropdown-menu-end border-0 shadow animated--fade-in-up"
+                 aria-labelledby="navbarDropdownUserImage">
+                <h6 class="dropdown-header d-flex align-items-center">
+                    <img class="dropdown-user-img"
+                         src="{{ url_for('static', filename='assets/img/illustrations/profiles/' + current_user.profile_image) }}"/>
+                    <div class="dropdown-user-details">
+                        <div class="dropdown-user-details-name">{{ current_user.first_name }} {{ current_user.last_name }}</div>
+                        <div class="dropdown-user-details-email">{{ current_user.email }}</div>
+                    </div>
+                </h6>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#!">
+                    <div class="dropdown-item-icon"><i data-feather="settings"></i></div>
+                    Conta
+                </a>
+                <a class="dropdown-item" href="{{ url_for('logout') }}">
+                    <div class="dropdown-item-icon"><i data-feather="log-out"></i></div>
+                    Sair
+                </a>
+            </div>
+        </li>
+    </ul>
+    <!-- Sidebar -->
+</nav>
+<div id="layoutSidenav">
+    <div id="layoutSidenav_nav">
+        <nav class="sidenav shadow-right sidenav-light">
+            <div class="sidenav-menu">
+                <div class="nav accordion" id="accordionSidenav">
+                    <!-- Sidenav Heading (Custom)-->
+                    <div class="sidenav-menu-heading">Menu</div>
+                    <!-- Sidenav Accordion (Pages)-->
+                    <a class="nav-link" href="/dashboard">
+                        <div class="nav-link-icon"><i data-feather="activity"></i></div>
+                        Dados em Tempo Real
+                    </a>
+
+                    <a class="nav-link" href="/relatorios">
+                        <div class="nav-link-icon"><i data-feather="file-text"></i></div>
+                        Análise e Relatórios
+                    </a>
+                    <a class="nav-link" href="/biblioteca-orquideas">
+                        <div class="nav-link-icon"><i data-feather="book-open"></i></div>
+                        Biblioteca de Orquídeas
+                    </a>
+                    <a class="nav-link" href="/notificacoes">
+                        <div class="nav-link-icon"><i data-feather="bell"></i></div>
+                        Alertas e Notificações
+                    </a>
+                    <a class="nav-link" href="/gestao-dispositivos">
+                        <div class="nav-link-icon"><i data-feather="box"></i></div>
+                        Gestão de Dispositivos
+                    </a>
+                    <a class="nav-link" href="/ajuda-suporte">
+                        <div class="nav-link-icon"><i data-feather="help-circle"></i></div>
+                        Ajuda e Suporte
+                    </a>
+
+                    <a class="nav-link" href="{{ url_for('logout') }}">
+                        <div class="nav-link-icon"><i data-feather="power"></i></div>
+                        Sair
+                    </a>
+                </div>
+            </div>
+            <div class="sidenav-footer">
+                <div class="sidenav-footer-content">
+                    <div class="sidenav-footer-subtitle">Sessão iniciada com:</div>
+                    <div class="sidenav-footer-title">{{ current_user.email }}</div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- Conteúdo Principal -->
+    <div id="layoutSidenav_content">
+        <main>
+            <header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
+                <div class="container-xl px-4">
+                    <div class="page-header-content pt-4">
+                        <div class="row align-items-center justify-content-between">
+                            <div class="col-auto mt-4">
+                                <h1 class="page-header-title">
+                                    <div class="page-header-icon"><i data-feather="bell"></i></div>
+                                    Alertas e Notificações
+                                </h1>
+                                <div class="page-header-subtitle">Visão geral e em tempo real do sistema.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- Main page content-->
+            <div class="container-xl px-4 mt-n10">
+                <div class="row">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center"><span>Listagem de Configurações</span>
+                            <a class="btn btn-sm btn-light text-primary" href="#" data-bs-toggle="modal"
+                               data-bs-target="#addModal">
+                                <i class="me-1" data-feather="plus"></i>
+                                Nova Configuração
+                            </a>
+
+                        </div>
+
+                        <div class="card-body">
+
+                            <table id="datatablesSimple">
+                                <thead>
+                                <tr>
+                                    <th>Orquídea</th>
+                                    <th>Temperatura Min</th>
+                                    <th>Temperatura Max</th>
+                                    <th>Humidade Min</th>
+                                    <th>Humidade Max</th>
+                                    <th>Opções</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for config in configuracoes_alertas %}
+                                    <tr>
+                                        <td>{{ config[1] }}</td> <!-- Nome da orquídea -->
+                                        <td>{{ config[2] }} °C</td> <!-- Temperatura Min -->
+                                        <td>{{ config[3] }} °C</td> <!-- Temperatura Max -->
+                                        <td>{{ config[4] }} %</td> <!-- Humidade Min -->
+                                        <td>{{ config[5] }} %</td> <!-- Humidade Max -->
+                                        <td>
+                                            <button class="btn btn-datatable btn-icon btn-transparent-dark me-2"
+                                                    onclick="openEditModal('{{ config[0] }}', '{{ config[1] }}', {{ config[2] }}, {{ config[3] }}, {{ config[4] }}, {{ config[5] }})">
+                                                <i class="fas fa-pen-to-square"></i>
+                                            </button>
+
+                                            <button class="btn btn-datatable btn-icon btn-transparent-dark"
+                                                    onclick="openDeleteModal('{{ config[0] }}')">
+                                                <i class="far fa-trash-can"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- Modal Create -->
+        <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addModalLabel">Nova Configuração</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="createFeedback" class="alert d-none"></div>
+                        <form id="createForm" method="POST">
+                            <div class="mb-3">
+                                <label for="createOrquidea" class="form-label">Seleccione a Orquídea:</label>
+                                <select class="form-select" id="createOrquidea" name="orquidea_id" required>
+                                    {% for orquidea in orquideas %}
+                                        <option value="{{ orquidea.id }}">{{ orquidea.nome }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="createTempMin" class="form-label">Temperatura Min (°C):</label>
+                                <input type="number" step="0.01" class="form-control" id="createTempMin" name="temp_min"
+                                       required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="createTempMax" class="form-label">Temperatura Max (°C):</label>
+                                <input type="number" step="0.01" class="form-control" id="createTempMax" name="temp_max"
+                                       required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="createHumidadeMin" class="form-label">Humidade Min (%):</label>
+                                <input type="number" step="0.01" class="form-control" id="createHumidadeMin"
+                                       name="humidade_min" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="createHumidadeMax" class="form-label">Humidade Max (%):</label>
+                                <input type="number" step="0.01" class="form-control" id="createHumidadeMax"
+                                       name="humidade_max" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-primary" onclick="submitCreateForm()">Gravar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Edit -->
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Editar Configuração</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="editFeedback" class="alert d-none"></div>
+                        <form id="editForm" method="POST">
+                            <input type="hidden" id="editConfigId" name="config_id">
+                            <div class="mb-3">
+                                <label for="editOrquidea" class="form-label">Orquídea:</label>
+                                <input type="text" class="form-control" id="editOrquidea" name="orquidea" disabled>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editTempMin" class="form-label">Temperatura Min (°C):</label>
+                                <input type="number" step="0.01" class="form-control" id="editTempMin" name="temp_min"
+                                       required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editTempMax" class="form-label">Temperatura Max (°C):</label>
+                                <input type="number" step="0.01" class="form-control" id="editTempMax" name="temp_max"
+                                       required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editHumidadeMin" class="form-label">Humidade Min (%):</label>
+                                <input type="number" step="0.01" class="form-control" id="editHumidadeMin"
+                                       name="humidade_min" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editHumidadeMax" class="form-label">Humidade Max (%):</label>
+                                <input type="number" step="0.01" class="form-control" id="editHumidadeMax"
+                                       name="humidade_max" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-primary" onclick="submitEditForm()">Gravar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Delete -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Confirmar Exclusão</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Tem a certeza que deseja excluir esta configuração?</p>
+                        <div id="deleteFeedback" class="alert d-none"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" id="confirmDeleteButton" class="btn btn-danger" onclick="confirmDelete()">
+                            Excluir
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+
+        <footer class="footer-admin mt-auto footer-light">
+            <div class="container-xl px-4">
+                <div class="row">
+                    <div class="col-md-6 small">&copy; Dinis Alexandre Barros Duarte - nº2412 - LEI - Projecto Académico 2023/24</div>
+                    <div class="col-md-6 text-md-end small">
+                        <a href="#!">Privacidade</a>
+                        &middot;
+                        <a href="#!">Termos &amp; Condições</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+<script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+        crossorigin="anonymous"></script>
+<script src="{{ url_for('static', filename='js/datatables/datatables-simple-demo.js') }}"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const dataTable = new simpleDatatables.DataTable("#datatablesSimple");
+    });
+</script>
+
+<script>
+    function submitCreateForm() {
+        const data = {
+            orquidea: document.getElementById('createOrquidea').value,
+            temp_min: document.getElementById('createTempMin').value,
+            temp_max: document.getElementById('createTempMax').value,
+            humidade_min: document.getElementById('createHumidadeMin').value,
+            humidade_max: document.getElementById('createHumidadeMax').value,
+        };
+
+        fetch('/add-config-alerta', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro na resposta da rede');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const feedbackElement = document.getElementById('createFeedback');
+                if (data.success) {
+                    feedbackElement.classList.remove('d-none', 'alert-danger');
+                    feedbackElement.classList.add('alert', 'alert-success');
+                    feedbackElement.textContent = data.message;
+                    setTimeout(() => {
+                        bootstrap.Modal.getInstance(document.getElementById('addModal')).hide();
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    feedbackElement.classList.remove('d-none', 'alert-success');
+                    feedbackElement.classList.add('alert', 'alert-danger');
+                    feedbackElement.textContent = data.message;
+                }
+            })
+            .catch(error => {
+                const feedbackElement = document.getElementById('createFeedback');
+                feedbackElement.classList.remove('d-none', 'alert-success');
+                feedbackElement.classList.add('alert', 'alert-danger');
+                feedbackElement.textContent = 'Erro ao criar a configuração: ' + error.message;
+            });
+    }
+</script>
+
+
+<script>
+    function openEditModal(id, orquideaNome, tempMin, tempMax, humidadeMin, humidadeMax) {
+        document.getElementById('editConfigId').value = id;
+        document.getElementById('editOrquidea').value = orquideaNome || '';
+        document.getElementById('editTempMin').value = tempMin || '';
+        document.getElementById('editTempMax').value = tempMax || '';
+        document.getElementById('editHumidadeMin').value = humidadeMin || '';
+        document.getElementById('editHumidadeMax').value = humidadeMax || '';
+
+        new bootstrap.Modal(document.getElementById('editModal')).show();
+    }
+
+    function submitEditForm() {
+        const id = document.getElementById('editConfigId').value;
+        const data = {
+            temp_min: document.getElementById('editTempMin').value,
+            temp_max: document.getElementById('editTempMax').value,
+            humidade_min: document.getElementById('editHumidadeMin').value,
+            humidade_max: document.getElementById('editHumidadeMax').value,
+        };
+
+        fetch('/edit-config-alerta/' + id, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro rede');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const feedbackElement = document.getElementById('editFeedback');
+                if (data.success) {
+                    feedbackElement.classList.remove('d-none', 'alert-danger');
+                    feedbackElement.classList.add('alert', 'alert-success');
+                    feedbackElement.textContent = data.message;
+                    setTimeout(() => {
+                        bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    feedbackElement.classList.remove('d-none', 'alert-success');
+                    feedbackElement.classList.add('alert', 'alert-danger');
+                    feedbackElement.textContent = data.message;
+                }
+            })
+            .catch(error => {
+                const feedbackElement = document.getElementById('editFeedback');
+                feedbackElement.classList.remove('d-none', 'alert-success');
+                feedbackElement.classList.add('alert', 'alert-danger');
+                feedbackElement.textContent = 'Erro ao atualizar a configuração: ' + error.message;
+            });
+    }
+</script>
+<script>
+    function openDeleteModal(id) {
+        document.getElementById('confirmDeleteButton').onclick = function () {
+            confirmDelete(id);
+        };
+        new bootstrap.Modal(document.getElementById('deleteModal')).show();
+    }
+
+    function confirmDelete(id) {
+        fetch('/delete-config-alerta/' + id, {
+            method: 'DELETE'
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.reload();
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                alert('Erro ao excluir a configuração: ' + error.message);
+            });
+    }
+</script>
+</body>
+</html>

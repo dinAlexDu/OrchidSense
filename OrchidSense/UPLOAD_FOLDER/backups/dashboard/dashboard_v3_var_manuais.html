@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Temperatura</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Área Principal -->
+    <main class="content">
+        <!-- Menu Vertical à Esquerda -->
+        <nav class="vertical-menu">
+            <ul>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/historico">Histórico de Temperaturas</a></li>
+                <li><a href="/notificacoes">Notificações</a></li>
+                <li><a href="/perfil">Perfil do Usuário</a></li>
+                <li><a href="/logout">Logout</a></li>
+                <li><a href="/labenv">Lab</a></li>
+            </ul>
+        </nav>
+
+        <!-- Dashboard -->
+        <div id="dashboard">
+            <h1>Dashboard de Temperaturas</h1>
+            <div class="current-data">
+                <h2>Dados Atuais</h2>
+                <p>Temperatura: <span id="temp-placeholder">A aguardar dados...</span></p>
+                <p>Humidade: <span id="humidity-placeholder">A aguardar dados...</span></p>
+            </div>
+        </div>
+    </main>
+
+<!-- Adicione o código JavaScript aqui -->
+<script>
+    // Função para atualizar os valores na página
+    function atualizarValores(temperatura, humidade) {
+        document.getElementById("temp-placeholder").textContent = temperatura.toFixed(2) + " °C";
+        document.getElementById("humidity-placeholder").textContent = humidade.toFixed(2) + " %";
+    }
+
+    // Suponha que você queira atualizar os valores assim que a página for carregada
+    // Substitua os valores abaixo pelos valores reais do sensor, se necessário
+    var temperatura = {{ temperatura|tojson|safe }};
+    var humidade = {{ humidade|tojson|safe }};
+    atualizarValores(temperatura, humidade);
+</script>
+{#<script>#}
+{#    function atualizarValores(temperatura, humidade) {#}
+{#        // Adicione unidades de medida#}
+{#        var temperaturaComUnidade = temperatura.toFixed(2) + " °C"; // Adiciona "°C" à temperatura#}
+{#        var humidadeComUnidade = humidade.toFixed(2) + " %"; // Adiciona "%" à humidade#}
+{##}
+{#        // Adicione instruções console.log para depuração#}
+{#        console.log("Função atualizarValores chamada com temperatura: " + temperatura + " e humidade: " + humidade);#}
+{##}
+{#        // Atualize os valores nos marcadores de posição#}
+{#        document.getElementById("temp-placeholder").textContent = temperaturaComUnidade;#}
+{#        document.getElementById("humidity-placeholder").textContent = humidadeComUnidade;#}
+{#    }#}
+{#</script>#}
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!-- Área Principal -->
+<main class="content">
+    {% include 'menu.html' %}
+    <!-- Dashboard -->
+    <div id="dashboard">
+        <h1>Dashboard de Temperatura</h1>
+        <div class="current-data">
+            <h2>Dados Atuais</h2>
+            <p>Temperatura: <span id="temp-placeholder">20°C</span></p>
+            <p>Umidade: <span id="humidity-placeholder">50%</span></p>
+        </div>
+    </div>
+    <!-- Incluir o link para o arquivo CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+</main>

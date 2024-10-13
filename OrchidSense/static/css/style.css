@@ -1,0 +1,70 @@
+/* Estilo do menu vertical */
+.vertical-menu {
+    width: 250px;
+    background-color: #333;
+    padding-top: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    overflow-x: hidden;
+    transition: 0.2s;
+}
+
+.vertical-menu ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.vertical-menu ul li {
+    margin: 0;
+    padding: 0;
+}
+
+.vertical-menu ul li a {
+    display: block;
+    padding: 16px;
+    color: white;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.vertical-menu ul li a:hover {
+    background-color: #555;
+}
+
+/* Estilo da área principal */
+.content {
+    margin-left: 250px; /* A largura do menu vertical */
+    padding: 20px;
+}
+/* Aplicar a fonte Raleway a todos os elementos de texto */
+body, p, h1, h2, h3, h4, h5, h6 {
+    font-family: 'Raleway', sans-serif;
+}
+.main-content {
+    display: flex; /* Define um layout de flexbox para a main-content */
+}
+
+.column-left,
+.column-center,
+.column-right {
+    flex: 1; /* Cada coluna ocupará uma parte igual do espaço disponível */
+    padding: 10px; /* Adicione espaçamento interno às colunas se desejar */
+}
+
+.column-left {
+    background-color: #f0f0f0; /* Cor de fundo da coluna "Datas" */
+}
+
+.column-center {
+    background-color: #e0e0e0; /* Cor de fundo da coluna "°C" */
+}
+
+.column-right {
+    background-color: #d0d0d0; /* Cor de fundo da coluna do gráfico */
+}
+
+.chart-container {
+    padding: 10px; /* Adicione espaçamento interno ao contêiner do gráfico, se desejar */
+}

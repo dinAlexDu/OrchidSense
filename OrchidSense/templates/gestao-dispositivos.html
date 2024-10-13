@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Head section containing meta information and external resources -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content="Dispositivos na plataforma OrchidSense.">
+    <meta name="author" content="OrchidSense">
+    <title>Gestão de Dispositivos - OrchidSense</title>
+
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" type="text/css"
+          href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="icon" type="image/x-icon"
+          href="{{ url_for('static', filename='images/favicon.png') }}"/>
+
+    <!-- Including external scripts for icons and styles -->
+    <script data-search-pseudo-elements defer
+            src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/js/all.min.js"
+            crossorigin="anonymous"></script>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"
+            crossorigin="anonymous"></script>
+</head>
+<body class="nav-fixed">
+<!-- Navbar (top navigation bar) section -->
+<nav
+        class="topnav navbar navbar-expand shadow justify-content-between justify-content-sm-start navbar-light bg-white"
+        id="sidenavAccordion">
+    <!-- Button for toggling the sidebar -->
+    <button
+            class="btn btn-icon btn-transparent-dark order-1 order-lg-0 me-2 ms-lg-2 me-lg-0"
+            id="sidebarToggle"><i
+            data-feather="menu"></i></button>
+
+    <!-- Brand logo in the navbar -->
+
+    <a class="navbar-brand pe-3 ps-4 ps-lg-2"
+       href="{{ url_for('index') }}">OrchidSense</a>
+
+
+
+    <!-- User account dropdown section in the navbar -->
+    <ul class="navbar-nav align-items-center ms-auto">
+            <!-- Dropdown for user profile -->
+        <li class="nav-item dropdown no-caret dropdown-user me-3 me-lg-4">
+            <a class="btn btn-icon btn-transparent-dark dropdown-toggle"
+               id="navbarDropdownUserImage"
+               href="javascript:void(0);" role="button" data-bs-toggle="dropdown"
+               aria-haspopup="true"
+               aria-expanded="false">
+                <!-- User profile image -->
+                <img class="img-fluid"
+                     src="{{ url_for('static', filename='assets/img/illustrations/profiles/' + current_user.profile_image) }}">
+            </a>
+            <div
+                    class="dropdown-menu dropdown-menu-end border-0 shadow animated--fade-in-up"
+                    aria-labelledby="navbarDropdownUserImage">
+                <h6 class="dropdown-header d-flex align-items-center">
+                    <!-- Display user's profile image and name -->
+                    <img class="dropdown-user-img"
+                         src="{{ url_for('static', filename='assets/img/illustrations/profiles/' + current_user.profile_image) }}"/>
+                    <div class="dropdown-user-details">
+                        <div class="dropdown-user-details-name">{{ current_user.first_name }} {{ current_user.last_name }}</div>
+                        <div class="dropdown-user-details-email">{{ current_user.email }}</div>
+                    </div>
+                </h6>
+                <div class="dropdown-divider"></div>
+                <!-- Links for user settings and logout -->
+                <a class="dropdown-item" href="#!">
+                    <div class="dropdown-item-icon"><i
+                            data-feather="settings"></i></div>
+                    Conta
+                </a>
+                <a class="dropdown-item" href="{{ url_for('logout') }}">
+                    <div class="dropdown-item-icon"><i
+                            data-feather="log-out"></i></div>
+                    Sair
+                </a>
+            </div>
+        </li>
+    </ul>
+</nav>
+<!-- Main layout container with the sidebar and main content -->
+<div id="layoutSidenav">
+    <div id="layoutSidenav_nav">
+        <!-- Sidebar with navigation options -->
+        <nav class="sidenav shadow-right sidenav-light">
+            <div class="sidenav-menu">
+                <div class="nav accordion" id="accordionSidenav">
+                    <!-- Links to various sections of the application -->
+                    <div class="sidenav-menu-heading">Menu</div>
+                    <a class="nav-link" href="/dashboard">
+                        <div class="nav-link-icon"><i data-feather="activity"></i></div>
+                        Dados em Tempo Real
+                    </a>
+                    <a class="nav-link" href="/relatorios">
+                        <div class="nav-link-icon"><i
+                                data-feather="file-text"></i></div>
+                        Análise e Relatórios
+                    </a>
+                    <a class="nav-link" href="/biblioteca-orquideas">
+                        <div class="nav-link-icon"><i
+                                data-feather="book-open"></i></div>
+                        Biblioteca de Orquídeas
+                    </a>
+                    <a class="nav-link" href="/notificacoes">
+                        <div class="nav-link-icon"><i data-feather="bell"></i></div>
+                        Alertas e Notificações
+                    </a>
+                    <a class="nav-link" href="/gestao-dispositivos">
+                        <div class="nav-link-icon"><i data-feather="box"></i></div>
+                        Gestão de Dispositivos
+                    </a>
+                    <!-- Admin-only section, conditionally shown -->
+                    {% if current_user.is_admin %}
+                        <a class="nav-link" href="/gestao-utilizadores">
+                            <div class="nav-link-icon"><i
+                                    data-feather="user-check"></i></div>
+                            Gestão de Utilizadores
+                        </a>
+                    {% endif %}
+
+                    <a class="nav-link" href="{{ url_for('logout') }}">
+                        <div class="nav-link-icon"><i data-feather="power"></i></div>
+                        Sair
+                    </a>
+                </div>
+            </div>
+            <!-- Displaying current user information in the sidebar footer -->
+            <div class="sidenav-footer">
+                <div class="sidenav-footer-content">
+                    <div class="sidenav-footer-subtitle">Início de sessão com:</div>
+                    <div class="sidenav-footer-title">{{ current_user.email }}</div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- Conteúdo Principal -->
+    <div id="layoutSidenav_content">
+        <main>
+            <!-- Page header section with a title -->
+            <header
+                    class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
+                <div class="container-xl px-4">
+                    <div class="page-header-content pt-4">
+                        <div class="row align-items-center justify-content-between">
+                            <div class="col-auto mt-4">
+                                <h1 class="page-header-title">
+                                    <div class="page-header-icon"><i
+                                            data-feather="box"></i></div>
+                                    Gestão de Dispositivos
+                                </h1>
+                                <div class="page-header-subtitle">Área Reservada a Administradores
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- Main page content displaying device information -->
+            <div class="container-xl px-4 mt-n10">
+                <div class="card mb-4">
+                    <div class="card-header">Microcontrolador</div>
+                    <div class="card-body">
+                        <!-- Displaying microcontroller details dynamically -->
+                        <p class="card-text"><strong>Nome:</strong> {{ dispositivo.nome }}</p>
+                        <p class="card-text"><strong>Modelo:</strong> {{ dispositivo.modelo }}</p>
+                        <p class="card-text"><strong>CPU:</strong> {{ dispositivo.cpu }}</p>
+                        <p class="card-text"><strong>RAM:</strong> {{ dispositivo.ram }}</p>
+                        <p class="card-text"><strong>Storage:</strong> {{ dispositivo.storage }}</p>
+                        <p class="card-text"><strong>Network:</strong> {{ dispositivo.network }}</p>
+                        <p class="card-text"><strong>OS:</strong> {{ dispositivo.os }}</p>
+                    </div>
+                </div>
+                <!-- Displaying sensor details -->
+                <div class="card mt-4">
+                    <div class="card-header">Sensor de temperatura e humidade</div>
+                    <div class="card-body">
+                        <p class="card-text"><strong>Nome:</strong> {{ sensor_dht22.nome }}</p>
+                        <p class="card-text"><strong>Intervalo de
+                            Temperatura:</strong> {{ sensor_dht22.intervalo_temperatura }}</p>
+                        <p class="card-text"><strong>Intervalo de
+                            Humidade:</strong> {{ sensor_dht22.intervalo_humidade }}</p>
+                        <p class="card-text"><strong>Precisão da
+                            Temperatura:</strong> {{ sensor_dht22.precisao_temperatura }}</p>
+                        <p class="card-text"><strong>Precisão da Humidade:</strong> {{ sensor_dht22.precisao_humidade }}
+                        </p>
+                        <p class="card-text"><strong>Alimentação:</strong> {{ sensor_dht22.alimentacao }}</p>
+                        <p class="card-text"><strong>Consumo:</strong> {{ sensor_dht22.consumo }}</p>
+                        <p class="card-text"><strong>Período de Medição:</strong> {{ sensor_dht22.periodo_colecta }}</p>
+                        <p class="card-text"><strong>Distância de Transmissão:</strong>
+                            {{ sensor_dht22.transmissao }}
+                        </p>
+                        <p class="card-text"><strong>Dimensões:</strong> {{ sensor_dht22.dimensoes }}</p>
+                    </div>
+                </div>
+                <!-- Light sensor information -->
+                <div class="card mt-4">
+                    <div class="card-header">Sensor de luz</div>
+                    <div class="card-body">
+                        <p class="card-text"><strong>Nome:</strong> {{ sensor_bh1750.nome }}</p>
+                        <p class="card-text"><strong>Intervalo de
+                            Medição:</strong> {{ sensor_bh1750.intervalo_medicao }}</p>
+                        <p class="card-text"><strong>Precisão:</strong> {{ sensor_bh1750.precisao }}</p>
+                        <p class="card-text"><strong>Alimentação:</strong> {{ sensor_bh1750.alimentacao }}</p>
+                        <p class="card-text"><strong>Corrente SDA:</strong> {{ sensor_bh1750.corrente_sda }}</p>
+                        <p class="card-text"><strong>Dissipação de
+                            Potência:</strong> {{ sensor_bh1750.dissipacao_potencia }}</p>
+                        <p class="card-text"><strong>Dimensões:</strong> {{ sensor_bh1750.dimensoes }}</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- Footer section -->
+
+        <footer class="footer-admin mt-auto footer-light">
+            <div class="container-xl px-4">
+                <div class="row">
+                    <div class="col-md-6 small">&copy; Dinis Alexandre Barros Duarte -
+                        nº2412 - LEI - Projecto Académico 2023/24
+                    </div>
+                    <div class="col-md-6 text-md-end small">
+                        <a href="#!">Privacidade</a>
+                        &middot;
+                        <a href="#!">Termos &amp; Condições</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+<!-- Scripts -->
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+<script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+<script
+        src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>

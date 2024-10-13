@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.png" />
+    <script data-search-pseudo-elements defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/js/all.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.3.1/dist/chartjs-adapter-luxon.umd.min.js"></script>
+
+</head>
+<body class="nav-fixed">
+     <!-- Navbar e Sidenav -->
+    <nav class="topnav navbar navbar-expand shadow justify-content-between justify-content-sm-start navbar-light bg-white" id="sidenavAccordion">
+        <!-- Sidenav Toggle Button-->
+        <button class="btn btn-icon btn-transparent-dark order-1 order-lg-0 me-2 ms-lg-2 me-lg-0" id="sidebarToggle"><i data-feather="menu"></i></button>
+
+        <!-- Navbar Brand-->
+        <a class="navbar-brand pe-3 ps-4 ps-lg-2" href="/index"> OrchidSense </a>
+        <!-- Sidebar Toggle-->
+
+        <!-- Navbar Search Input-->
+        <form class="form-inline me-auto d-none d-lg-block me-3">
+            <div class="input-group input-group-joined input-group-solid">
+                <input class="form-control pe-0" type="search" placeholder="Pesquisar..." aria-label="Search" aria-label="Search" />
+                <div class="input-group-text"><i data-feather="search"></i></div>
+            </div>
+        </form>
+        <!-- Navbar Items-->
+        <ul class="navbar-nav align-items-center ms-auto">
+            <!-- User Dropdown-->
+                <li class="nav-item dropdown no-caret dropdown-user me-3 me-lg-4">
+                    <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownUserImage" href="javascript:void(0);" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="img-fluid" src="assets/img/illustrations/profiles/profile-1.png" /></a>
+                    <div class="dropdown-menu dropdown-menu-end border-0 shadow animated--fade-in-up" aria-labelledby="navbarDropdownUserImage">
+                        <h6 class="dropdown-header d-flex align-items-center">
+                            <img class="dropdown-user-img" src="assets/img/illustrations/profiles/profile-1.png" />
+                            <div class="dropdown-user-details">
+                                <div class="dropdown-user-details-name">Valerie Luna</div>
+                                <div class="dropdown-user-details-email">vluna@aol.com</div>
+                            </div>
+                        </h6>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#!">
+                            <div class="dropdown-item-icon"><i data-feather="settings"></i></div>
+                            Account
+                        </a>
+                        <a class="dropdown-item" href="#!">
+                            <div class="dropdown-item-icon"><i data-feather="log-out"></i></div>
+                            Logout
+                        </a>
+                    </div>
+                </li>
+        </ul>
+        <!-- Sidebar -->
+    </nav>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sidenav shadow-right sidenav-light">
+                <div class="sidenav-menu">
+                    <div class="nav accordion" id="accordionSidenav">
+                    <!-- Sidenav Heading (Custom)-->
+                        <div class="sidenav-menu-heading">Menu</div>
+                        <!-- Sidenav Accordion (Pages)-->
+                        <a class="nav-link" href="/dashboard">
+                            <div class="nav-link-icon"><i data-feather="activity"></i></div>
+                            Dashboard
+                        </a>
+
+                        <a class="nav-link" href="/historico">
+                                <div class="nav-link-icon"><i data-feather="bar-chart"></i></div>
+                                Histórico
+                        </a>
+
+                        <a class="nav-link" href="/relatorios">
+                            <div class="nav-link-icon"><i data-feather="file-text"></i></div>
+                            Relatórios
+                        </a>
+                        <a class="nav-link" href="/biblioteca-orquideas">
+                            <div class="nav-link-icon"><i data-feather="book-open"></i></div>
+                            Biblioteca de Orquídeas
+                        </a>
+                        <a class="nav-link" href="/gestao-dispositivos">
+                            <div class="nav-link-icon"><i data-feather="box"></i></div>
+                            Gestão de Dispositivos
+                        </a>
+                        <a class="nav-link" href="/ajuda-suporte">
+                            <div class="nav-link-icon"><i data-feather="help-circle"></i></div>
+                            Ajuda e Suporte
+                        </a>
+                        <a class="nav-link" href="/notificacoes">
+                            <div class="nav-link-icon"><i data-feather="bell"></i></div>
+                            Notificações
+                        </a>
+                        <a class="nav-link" href="/logout">
+                            <div class="nav-link-icon"><i data-feather="power"></i></div>
+                            Logout
+                        </a>
+                    </div>
+                </div>
+                <div class="sidenav-footer">
+                    <div class="sidenav-footer-content">
+                        <div class="sidenav-footer-subtitle">Logged in as:</div>
+                        <div class="sidenav-footer-title">Valerie Luna</div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Conteúdo Principal -->
+        <div id="layoutSidenav_content">
+            <main>
+               <header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
+                        <div class="container-xl px-4">
+                            <div class="page-header-content pt-4">
+                                <div class="row align-items-center justify-content-between">
+                                    <div class="col-auto mt-4">
+                                        <h1 class="page-header-title">
+                                            <div class="page-header-icon"><i data-feather="activity"></i></div>
+                                            Dashboard
+                                        </h1>
+                                        <div class="page-header-subtitle">Use this blank page as a starting point for creating new pages inside your project!</div>
+                                    </div>
+                                    <div class="col-12 col-xl-auto mt-4">Optional page header content</div>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+                <!-- Main page content-->
+                <div class="container-xl px-4 mt-n10">
+                    <!-- Seção de Dados em Tempo Real -->
+                        <div class="card mb-4">
+                            <div class="card-header">Dados em Tempo Real</div>
+                                <div class="card-body">
+                                    <p></p>
+                                    <h4>Temperatura: <span id="temp-placeholder">A aguardar dados...</span></h4>
+                                    <h4>Humidade: <span id="humidity-placeholder">A aguardar dados...</span></h4>
+                                    <p></p>
+                                    <p>Os dados são atualizados de 10 em 10 segundos.</p>
+                                </div>
+                        </div>
+                        <!-- Início da Seção de Gráficos Históricos -->
+                        <div class="mt-5">
+                            <h3 class="text-center mb-4">Histórico de Dados</h3>
+                            <!-- Gráfico de Temperatura -->
+                            <div class="card mb-4">
+                                <div class="card-header">Temperatura</div>
+                                <div class="card-body">
+                                    <div class="chart-area"><canvas id="historico-chart" width="100%" height="40"></canvas></div>
+                                </div>
+                                <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                            </div>
+
+                            <!-- Gráfico de Humidade -->
+                            <div class="card mb-4">
+                                <div class="card-header">Humidade</div>
+                                <div class="card-body">
+                                    <div class="chart-area"><canvas id="humidade-chart" width="100%" height="40"></canvas></div>
+                                </div>
+                                <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                            </div>
+                        </div>
+                        <!-- Fim da Seção de Gráficos Históricos -->
+                </div>
+            </main>
+
+
+            <!-- Footer -->
+            <footer class="footer-admin mt-auto footer-light">
+                    <div class="container-xl px-4">
+                        <div class="row">
+                            <div class="col-md-6 small">Copyright &copy; OrchidSense 2024</div>
+                            <div class="col-md-6 text-md-end small">
+                                <a href="#!">Privacy Policy</a>
+                                &middot;
+                                <a href="#!">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+            </footer>
+        </div>
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<!-- Substitua 'caminho/para/seu/js/scripts.js' pelo caminho correto do seu arquivo scripts.js -->
+<script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" crossorigin="anonymous"></script>
+<script src="{{ url_for('static', filename='js/chart-area.js') }}"></script>
+<script src="{{ url_for('static', filename='js/chart-bar.js') }}"></script>
+<script src="{{ url_for('static', filename='js/chart-pie.js') }}"></script>
+
+
+
+ <script>
+    // Suponha que você queira atualizar os valores assim que a página for carregada
+    // Substitua os valores abaixo pelos valores reais do sensor, se necessário
+    var temperatura = {{ temperatura|tojson|safe }};
+    var humidade = {{ humidade|tojson|safe }};
+
+    // Função para atualizar os valores na página
+    function atualizarValores(temperatura, humidade) {
+        document.getElementById("temp-placeholder").textContent = temperatura.toFixed(2) + " °C";
+        document.getElementById("humidity-placeholder").textContent = humidade.toFixed(2) + " %";
+        }
+        atualizarValores(temperatura, humidade);
+ </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // Defina uma variável JavaScript global com os dados do histórico
+    var dados = {{ dados|tojson|safe }};
+    console.log("Dados Recebidos:", dados);
+
+    // Função para formatação de números (se necessário)
+    function number_format(number, decimals, dec_point, thousands_sep) {
+        // Lógica de formatação aqui...
+    }
+
+    // Configuração padrão do Chart.js
+    Chart.defaults.global.defaultFontFamily = "Metropolis, '-apple-system,system-ui,BlinkMacSystemFont,\"Segoe UI\",Roboto,\"Helvetica Neue\",Arial,sans-serif'";
+    Chart.defaults.global.defaultFontColor = "#858796";
+
+    // Extrair as datas, temperaturas e humidades dos dados
+    var datas = [];
+    var temperaturas = [];
+    var humidades = [];
+
+    {% for dado in dados %}
+        var dataHoraStr = "{{ dado.data }}";
+        var dataHoraStrISO = dataHoraStr.replace(" ", "T");
+        var dataHora = new Date(dataHoraStrISO);
+        datas.push(dataHora.toLocaleString());
+        temperaturas.push({{ dado.temperatura }});
+        humidades.push({{ dado.humidade }});
+    {% endfor %}
+
+    // Gráfico de Temperatura
+    var ctxTemp = document.getElementById("historico-chart").getContext("2d");
+    var chartTemperatura = new Chart(ctxTemp, {
+        type: 'line',
+        data: {
+            labels: datas,
+            datasets: [{
+                label: 'Temperatura (°C)',
+                lineTension: 0.3,
+                backgroundColor: 'rgba(78, 115, 223, 0.05)',
+                borderColor: 'rgba(78, 115, 223, 1)',
+                data: temperaturas
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            scales: {
+                xAxes: [{
+                    gridLines: {
+                        display: false,
+                        drawBorder: false
+                     },
+                    ticks: {
+                        maxTicksLimit: 5,
+                        autoSkip: true,
+                        maxRotation: 0,
+                        minRotation: 0
+                    }
+                }],
+                yAxes: [{
+                    gridLines: {
+                        color: "rgb(234, 236, 244)",
+                        zeroLineColor: "rgb(234, 236, 244)",
+                        drawBorder: false,
+                        borderDash: [2],
+                        zeroLineBorderDash: [2]
+                    },
+                    ticks: {
+                    maxTicksLimit: 5,
+                    padding: 10,
+                    callback: function(value) {
+                        // Personalize a formatação dos ticks aqui se necessário
+                        return value;
+                         }
+                    }
+                 }]
+            },
+            legend: {
+                display: true
+            },
+            tooltips: {
+                backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                borderColor: '#dddfeb',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 15,
+                displayColors: false,
+                caretPadding: 10,
+                callbacks: {
+                    label: function(tooltipItem, chart) {
+                    var dataLabel = chart.labels[tooltipItem.index]; // Pega a data do ponto
+                    var valor = tooltipItem.yLabel; // Pega o valor da temperatura ou umidade do ponto
+                    return dataLabel + ': ' + valor;
+                    }
+                }
+            }
+        }
+
+    });
+
+    // Gráfico de Humidade
+var ctxHum = document.getElementById("humidade-chart").getContext("2d");
+var chartHumidade = new Chart(ctxHum, {
+    type: 'line',
+    data: {
+        labels: datas,
+        datasets: [{
+            label: 'Humidade (%)',
+            lineTension: 0.3,
+            backgroundColor: 'rgba(28, 200, 138, 0.05)',
+            borderColor: 'rgba(28, 200, 138, 1)',
+            data: humidades
+        }]
+    },
+    options: {
+        maintainAspectRatio: false,
+        layout: {
+            padding: {
+                left: 10,
+                right: 25,
+                top: 25,
+                bottom: 0
+            }
+        },
+        scales: {
+            xAxes: [{
+                time: {
+                    unit: 'date'
+                },
+                gridLines: {
+                    display: false,
+                    drawBorder: false
+                },
+                ticks: {
+                    maxTicksLimit: 5,
+                    autoSkip: true,
+                    maxRotation: 0, // Mantém os labels na horizontal
+                    minRotation: 0  // Mantém os labels na horizontal
+                }
+            }],
+            yAxes: [{
+                ticks: {
+                    maxTicksLimit: 5,
+                    padding: 10,
+                    callback: function(value) {
+                        return value + '%';
+                    }
+                },
+                gridLines: {
+                    color: 'rgb(234, 236, 244)',
+                    zeroLineColor: 'rgb(234, 236, 244)',
+                    drawBorder: false,
+                    borderDash: [2],
+                    zeroLineBorderDash: [2]
+                }
+            }]
+        },
+        legend: {
+            display: true
+        },
+        tooltips: {
+            backgroundColor: 'rgb(255,255,255)',
+            bodyFontColor: '#858796',
+            borderColor: '#dddfeb',
+            borderWidth: 1,
+            xPadding: 15,
+            yPadding: 15,
+            displayColors: false,
+            caretPadding: 10,
+            callbacks: {
+                label: function(tooltipItem, chart) {
+                    var label = chart.datasets[tooltipItem.datasetIndex].label || '';
+                    return tooltipItem.xLabel + ': ' + label + ' ' + tooltipItem.yLabel;
+                }
+            }
+        }
+    }
+});
+
+});
+</script>
+
+
+</body>
+</html>
+
+

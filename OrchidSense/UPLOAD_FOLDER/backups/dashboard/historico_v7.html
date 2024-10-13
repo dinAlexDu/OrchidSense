@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histórico de Temperaturas</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Inclua a biblioteca Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.3.1/dist/chartjs-adapter-luxon.umd.min.js"></script>
+
+</head>
+<body>
+<!-- Área Principal -->
+<main class="content">
+    <!-- Menu Vertical à Esquerda (Você pode copiar o menu do dashboard.html) -->
+    <nav class="vertical-menu">
+        <ul>
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/historico">Histórico</a></li>
+            <li><a href="/notificacoes">Notificações</a></li>
+            <li><a href="/perfil">Perfil</a></li>
+            <li><a href="/logout">Logout</a></li>
+            <li><a href="/labenv">Lab</a></li>
+        </ul>
+    </nav>
+
+
+    <!-- Formulário para filtrar por datas -->
+    <h1>Filtragem de Dados</h1>
+    <form action="/historico" method="post">
+        <label for="data_inicio">Data de Início:</label>
+        <input type="date" id="data_inicio" name="data_inicio">
+
+        <label for="data_fim">Data de Fim:</label>
+        <input type="date" id="data_fim" name="data_fim">
+
+        <input type="submit" value="Filtrar">
+    </form>
+
+    <h2>Temperaturas</h2>
+
+    <div class="main-content">
+        <!-- Conteúdo da Coluna da Esquerda (Filtrar Dados e Listagem de Temperaturas) -->
+        <div class="column-left">
+            <h2>Datas</h2>
+            <ul>
+                <!-- Loop para exibir os dados de datas -->
+
+                {% for dado in dados %}
+                    <li>{{ dado.data.strftime('%Y-%m-%d %H:%M:%S') }}</li>
+
+                {% endfor %}
+            </ul>
+
+
+        </div>
+        <div class="column-center">
+            <h2>°C</h2>
+            <ul>
+                <!-- Loop para exibir as temperaturas -->
+                {% for dado in dados %}
+                    <li>{{ dado.temperatura|round(2) }} °C</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+
+        <!-- Conteúdo da Coluna da Direita (Gráfico) -->
+        <div class="column-right">
+            <h2>Gráfico de Temperatura</h2>
+            <div class="chart-container">
+                <canvas id="historico-chart" width="600" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+
+
+    <h2>Humidade</h2>
+
+    <div class="main-content">
+        <!-- Conteúdo da Coluna da Esquerda (Listagem de Humidade) -->
+        <div class="column-left">
+            <h2>Datas</h2>
+            <ul>
+                <!-- Loop para exibir os dados de datas de humidade -->
+                {% for dado in dados %}
+                    <li>{{ dado.data.strftime('%Y-%m-%d %H:%M:%S') }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="column-center">
+            <h2>%</h2>
+            <ul>
+                <!-- Loop para exibir as porcentagens de umidade -->
+                {% for dado in dados %}
+                    <li>{{ dado.humidade|round(2) }}%</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Conteúdo da Coluna da Direita (Gráfico de Humidade) -->
+        <div class="column-right">
+            <h2>Gráfico de Humidade</h2>
+            <div class="chart-container">
+                <canvas id="humidade-chart" width="600" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Defina uma variável JavaScript global com os dados do histórico
+        var dados = {{ dados|tojson|safe }};
+        console.log("Dados Recebidos:", dados); // Adicione isso para depurar
+
+        // Extrair as datas e temperaturas dos dados
+        var datas = [];
+        var temperaturas = [];
+
+        {% for dado in dados %}
+            // Corrija o formato da string da data e hora para o formato ISO 8601
+            var dataHoraStr = "{{ dado.data }}";
+            var dataHoraStrISO = dataHoraStr.replace(" ", "T");
+
+            var dataHora = new Date(dataHoraStrISO);
+            console.log("Data Formatada", dataHora);
+            datas.push(dataHora.toLocaleString());
+            temperaturas.push({{ dado.temperatura }});
+        {% endfor %}
+
+        // Obter uma referência ao elemento de gráfico de histórico
+        var historicoChart = document.getElementById("historico-chart").getContext("2d");
+
+        console.log("Datas Formatadas:", datas);
+
+        // Criar um gráfico de linha
+        var chart = new Chart(historicoChart, {
+            type: "line",
+            data: {
+                labels: datas, // Use as datas formatadas no eixo X
+                datasets: [
+                    {
+                        label: "Temperatura (°C)",
+                        data: temperaturas,
+                        borderColor: "rgba(255, 99, 132, 0.4)",
+                        backgroundColor: "rgba(201, 203, 207, 0.4)",
+                        fill: false,
+                        tension: 0.4, // Define a tensão da linha (maior valor para uma linha mais curva)
+                    },
+                ],
+            },
+            options: {
+                responsive: false,
+                maintainAspectRatio: true,
+                scales: {
+                    x: {
+                        type: "category", // Especifica que as datas estão no eixo X
+                        title: {
+                            display: true,
+                            text: 'Datas',
+                        },
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Graus (°C)',
+                        },
+                    },
+                },
+            },
+        });
+    });
+
+
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Obter uma referência ao elemento de gráfico de humidade
+        var humidadeChart = document.getElementById("humidade-chart").getContext("2d");
+
+        // Extrair as datas e humidades dos dados
+        var datas = [];
+        var humidades = [];
+
+        {% for dado in dados %}
+            // Corrija o formato da string da data e hora para o formato ISO 8601
+            var dataHoraStr = "{{ dado.data }}";
+            var dataHoraStrISO = dataHoraStr.replace(" ", "T");
+
+            var dataHora = new Date(dataHoraStrISO);
+            datas.push(dataHora.toLocaleString());
+            humidades.push({{ dado.humidade }});
+        {% endfor %}
+
+        // Criar um gráfico de linha para humidade
+        var chart = new Chart(humidadeChart, {
+            type: "line",
+            data: {
+                labels: datas,
+                datasets: [
+                    {
+                        label: "Humidade (%)",
+                        data: humidades,
+                        borderColor: "rgba(75, 192, 192, 0.4)", // Cor de linha para humidade
+                        backgroundColor: "rgba(75, 192, 192, 0.4)", // Cor de fundo para humidade
+                        fill: false,
+                        tension: 0.4,
+                    },
+                ],
+            },
+            options: {
+                responsive: false,
+                maintainAspectRatio: true,
+                scales: {
+                    x: {
+                        type: "category",
+                        title: {
+                            display: true,
+                            text: 'Datas',
+                        },
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Humidade (%)',
+                        },
+                    },
+                },
+            },
+        });
+    });
+</script>
+
+
+</body>
+</html>

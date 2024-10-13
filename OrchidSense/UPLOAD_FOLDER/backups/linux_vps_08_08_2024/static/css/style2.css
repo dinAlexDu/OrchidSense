@@ -1,0 +1,14 @@
+/* Estilo para o vertical-menu */
+.vertical-menu {
+    float: left;
+    width: 20%; /* Ajuste a largura conforme necessário */
+    background-color: #f1f1f1; /* Cor de fundo do menu */
+    height: 100%; /* Garante que o menu tenha a altura total da página */
+    position: fixed; /* Mantém o menu fixo à esquerda */
+}
+
+/* Estilo para a área principal */
+.content {
+    margin-left: 20%; /* Margem esquerda igual à largura do menu */
+    padding: 20px; /* Espaçamento interno para melhorar a aparência */
+}

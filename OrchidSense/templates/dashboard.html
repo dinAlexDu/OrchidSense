@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags for character set, viewport, and IE compatibility -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <!-- Meta description for SEO and author details -->
+    <meta name="description" content="Visão geral do sistema OrchidSense. Dados de temperatura, humidade e luminosidade em tempo real.">
+    <meta name="author" content="OrchidSense">
+    <!-- Page title -->
+    <title>Dados em Tempo Real - OrchidSense</title>
+
+    <!-- Linking external CSS and favicon -->
+    <link rel="stylesheet" type="text/css"
+          href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="icon" type="image/x-icon"
+          href="{{ url_for('static', filename='images/favicon.png') }}"/>
+
+    <!-- External libraries for Font Awesome and Feather Icons -->
+    <script data-search-pseudo-elements defer
+            src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/js/all.min.js"
+            crossorigin="anonymous"></script>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"
+            crossorigin="anonymous"></script>
+
+    <!-- Custom style for hiding elements (invisible class) -->
+    <style>
+        .invisible {
+            visibility: hidden;
+        }
+    </style>
+
+</head>
+<body class="nav-fixed">
+<!-- Navbar e Sidenav -->
+<nav
+        class="topnav navbar navbar-expand shadow justify-content-between justify-content-sm-start navbar-light bg-white"
+        id="sidenavAccordion">
+    <!-- Sidenav Toggle Button-->
+    <button
+            class="btn btn-icon btn-transparent-dark order-1 order-lg-0 me-2 ms-lg-2 me-lg-0"
+            id="sidebarToggle"><i
+            data-feather="menu"></i></button>
+    <!-- Navbar brand/logo linking to index page -->
+    <a class="navbar-brand pe-3 ps-4 ps-lg-2"
+       href="{{ url_for('index') }}">OrchidSense</a>
+    <!-- Sidebar Toggle-->
+
+    <!-- User profile dropdown -->
+    <ul class="navbar-nav align-items-center ms-auto">
+        <!-- User Dropdown-->
+        <li class="nav-item dropdown no-caret dropdown-user me-3 me-lg-4">
+            <a class="btn btn-icon btn-transparent-dark dropdown-toggle"
+               id="navbarDropdownUserImage"
+               href="javascript:void(0);" role="button" data-bs-toggle="dropdown"
+               aria-haspopup="true"
+               aria-expanded="false">
+                <!-- Displaying user profile image -->
+                <img class="img-fluid"
+                     src="{{ url_for('static', filename='assets/img/illustrations/profiles/' + current_user.profile_image) }}">
+            </a>
+            <div
+                    class="dropdown-menu dropdown-menu-end border-0 shadow animated--fade-in-up"
+                    aria-labelledby="navbarDropdownUserImage">
+                <h6 class="dropdown-header d-flex align-items-center">
+                    <!-- Profile details (image, name, email) -->
+                    <img class="dropdown-user-img"
+                         src="{{ url_for('static', filename='assets/img/illustrations/profiles/' + current_user.profile_image) }}"/>
+                    <div class="dropdown-user-details">
+                        <div class="dropdown-user-details-name">{{ current_user.first_name }} {{ current_user.last_name }}</div>
+                        <div class="dropdown-user-details-email">{{ current_user.email }}</div>
+                    </div>
+                </h6>
+                <div class="dropdown-divider"></div>
+                <!-- Link to account settings and logout -->
+                <a class="dropdown-item" href="#!">
+                    <div class="dropdown-item-icon"><i
+                            data-feather="settings"></i></div>
+                    Conta
+                </a>
+                <a class="dropdown-item" href="{{ url_for('logout') }}">
+                    <div class="dropdown-item-icon"><i
+                            data-feather="log-out"></i></div>
+                    Sair
+                </a>
+            </div>
+        </li>
+    </ul>
+</nav>
+<!-- Sidenav menu -->
+
+<div id="layoutSidenav">
+    <div id="layoutSidenav_nav">
+        <nav class="sidenav shadow-right sidenav-light">
+            <div class="sidenav-menu">
+                <div class="nav accordion" id="accordionSidenav">
+                    <!-- Menu heading -->
+                    <div class="sidenav-menu-heading">Menu</div>
+                    <!-- Real-time data link -->
+                    <a class="nav-link" href="/dashboard">
+                        <div class="nav-link-icon"><i data-feather="activity"></i></div>
+                        Dados em Tempo Real
+                    </a>
+                    <!-- Other navigation links for reports, library, and alerts -->
+                    <a class="nav-link" href="/relatorios">
+                        <div class="nav-link-icon"><i
+                                data-feather="file-text"></i></div>
+                        Análise e Relatórios
+                    </a>
+                    <a class="nav-link" href="/biblioteca-orquideas">
+                        <div class="nav-link-icon"><i
+                                data-feather="book-open"></i></div>
+                        Biblioteca de Orquídeas
+                        <a class="nav-link" href="/notificacoes">
+                            <div class="nav-link-icon"><i data-feather="bell"></i></div>
+                            Alertas e Notificações
+                        </a>
+                    </a>
+                    <!-- Conditional display of links for admin users -->
+                    {% if current_user.is_admin %}
+                    <a class="nav-link" href="/gestao-dispositivos">
+                        <div class="nav-link-icon"><i data-feather="box"></i></div>
+                        Gestão de Dispositivos
+                    </a>
+                    {% endif %}
+                    {% if current_user.is_admin %}
+                     <a class="nav-link" href="/gestao-utilizadores">
+                        <div class="nav-link-icon"><i
+                                data-feather="user-check"></i></div>
+                        Gestão de Utilizadores
+                    </a>
+                    {% endif %}
+                    <!-- Logout link -->
+                    <a class="nav-link" href="{{ url_for('logout') }}">
+                        <div class="nav-link-icon"><i data-feather="power"></i></div>
+                        Sair
+                    </a>
+                </div>
+            </div>
+            <!-- Display current user information in the footer -->
+            <div class="sidenav-footer">
+                <div class="sidenav-footer-content">
+                    <div class="sidenav-footer-subtitle">Início de sessão com:</div>
+                    <div class="sidenav-footer-title">{{ current_user.email }}</div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- Main content section -->
+    <div id="layoutSidenav_content">
+        <main>
+            <!-- Header with gradient background and page title -->
+            <header
+                    class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
+                <div class="container-xl px-4">
+                    <div class="page-header-content pt-4">
+                        <div class="row align-items-center justify-content-between">
+                            <div class="col-auto mt-4">
+                                <!-- Main page title and subtitle -->
+                                <h1 class="page-header-title">
+                                    <div class="page-header-icon"><i
+                                            data-feather="activity"></i></div>
+                                    Dados em Tempo Real
+                                </h1>
+                                <div class="page-header-subtitle">Visão geral, em tempo
+                                    real, do sistema.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- Cards for displaying real-time data: temperature, humidity, and luminosity -->
+            <div class="container-xl px-4 mt-n10">
+                <div class="row">
+                    <!-- Real-time temperature card -->
+                    <div class="col-xl-4 mb-4">
+                        <div class="card lift h-100">
+                            <div
+                                    class="card-body d-flex justify-content-center flex-column">
+                                <div
+                                        class="d-flex align-items-center justify-content-between">
+                                    <div class="me-3">
+                                        <i class="feather-xl text-red mb-3"
+                                           data-feather="thermometer"></i>
+                                        <h5>Temperatura</h5>
+                                        <div class="text-muted small"></div>
+                                    </div>
+                                    <h4 class="text-red invisible" id="temp-placeholder">A aguardar dados...</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Real-time humidity card -->
+                    <div class="col-xl-4 mb-4">
+                        <div class="card lift h-100">
+                            <div
+                                    class="card-body d-flex justify-content-center flex-column">
+                                <div
+                                        class="d-flex align-items-center justify-content-between">
+                                    <div class="me-3">
+                                        <i class="feather-xl text-cyan mb-3"
+                                           data-feather="cloud"></i>
+                                        <h5>Humidade</h5>
+                                        <div class="text-muted small"></div>
+                                    </div>
+                                    <h4 class="text-cyan invisible" id="humidity-placeholder">A aguardar dados...</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Real-time luminosity card -->
+                    <div class="col-xl-4 mb-4">
+                        <div class="card lift h-100">
+                            <div
+                                    class="card-body d-flex justify-content-center flex-column">
+                                <div
+                                        class="d-flex align-items-center justify-content-between">
+                                    <div class="me-3">
+                                        <i class="feather-xl text-yellow mb-3"
+                                           data-feather="sun"></i>
+                                        <h5>Luminosidade</h5>
+                                        <div class="text-muted small"></div>
+                                    </div>
+                                    <h4 class="text-yellow invisible" id="lux-placeholder">A aguardar dados...</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Chart for temperature data -->
+                <div class="card mb-4">
+                    <div class="card-header">Temperatura</div>
+                    <div class="card-body">
+                        <div class="chart-area mb-4 mb-lg-0" style="height: 20rem">
+                            <canvas id="temperatura-chart" width="100%"
+                                    height="30"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <!-- Chart for humidity data -->
+                <div class="card mb-4">
+                    <div class="card-header">Humidade</div>
+                    <div class="card-body">
+                        <div class="chart-area mb-4 mb-lg-0" style="height: 20rem">
+                            <canvas id="humidade-chart" width="100%" height="30"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <!-- Chart for luminosity data -->
+                <div class="card mb-4">
+                    <div class="card-header">Luminosidade</div>
+                    <div class="card-body">
+                        <div class="chart-area mb-4 mb-lg-0" style="height: 20rem">
+                            <canvas id="luminosidade-chart" width="100%"
+                                    height="30"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- Footer with author's information -->
+
+        <footer class="footer-admin mt-auto footer-light">
+            <div class="container-xl px-4">
+                <div class="row">
+                    <div class="col-md-6 small">&copy; Dinis Alexandre Barros Duarte -
+                        nº2412 - LEI - Projecto Académico
+                        2023/24
+                    </div>
+                    <div class="col-md-6 text-md-end small">
+                        <a href="#!">Privacidade</a>
+                        &middot;
+                        <a href="#!">Termos &amp; Condições</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+<!-- Scripts for Bootstrap, Chart.js, and custom scripts -->
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+<script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+<script
+        src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"
+        crossorigin="anonymous"></script>
+
+<!-- Script to manage chart data and updating the UI with real-time data -->
+<script>
+    window.chartData = {
+        labels: {{ labels | tojson }},
+        temperaturas: {{ temperaturas | tojson }},
+        humidades: {{ humidades | tojson }},
+        luminosidades: {{ luminosidades | tojson }}
+    };
+</script>
+
+<script
+        src="{{ url_for('static', filename='js/chart-area-dashboard.js') }}">
+
+</script>
+
+<script>
+    // Global variables for real-time data
+    var temperatura = {{ temperatura_atual | tojson | default(0) | safe }};
+    var humidade = {{ humidade_atual | tojson | default(0) | safe }};
+    var luminosidade = {{ luminosidade_atual | tojson | default(0) | safe }};
+    var initialLoad = true;
+
+    // Function to update the UI with real-time values
+    function atualizarValores(temperatura, humidade, luminosidade) {
+        // Ensure values are formatted with toFixed
+        temperatura = parseFloat(temperatura);
+        humidade = parseFloat(humidade);
+        luminosidade = parseFloat(luminosidade);
+
+        // Update UI elements with the new values
+        document.getElementById("temp-placeholder").textContent = temperatura.toFixed(1) + " °C";
+        document.getElementById("humidity-placeholder").textContent = humidade.toFixed(1) + " %";
+        document.getElementById("lux-placeholder").textContent = luminosidade.toFixed(0) + " lux";
+
+        // Remove the 'invisible' class to display the updated values
+        document.getElementById("temp-placeholder").classList.remove('invisible');
+        document.getElementById("humidity-placeholder").classList.remove('invisible');
+        document.getElementById("lux-placeholder").classList.remove('invisible');
+    }
+
+    // Function to fetch real-time data from the API
+    function fetchRealTimeData() {
+        fetch('/api/tempo_real')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.temperatura && data.humidade && data.luminosidade) {
+                    temperatura = parseFloat(data.temperatura).toFixed(1);
+                    humidade = parseFloat(data.humidade).toFixed(1);
+                    luminosidade = parseFloat(data.luminosidade).toFixed(0);
+
+                    // Update the displayed values
+                    atualizarValores(temperatura, humidade, luminosidade);
+
+
+                    if (initialLoad) {
+                        initialLoad = false;
+                    }
+                } else {
+                    throw new Error('Incomplete data');
+                }
+            })
+            .catch(error => {
+                console.error('Failed to fetch real-time data:', error);
+                // Display error messages if the data fetch fails
+                document.getElementById("temp-placeholder").textContent = "Erro ao carregar";
+                document.getElementById("humidity-placeholder").textContent = "Erro ao carregar";
+                document.getElementById("lux-placeholder").textContent = "Erro ao carregar";
+            });
+    }
+
+    // Initial data fetch
+    fetchRealTimeData();
+
+    // Set interval to refresh the data every 15 seconds
+    setInterval(fetchRealTimeData, 15000);
+</script>
+
+
+</body>
+</html>
