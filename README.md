@@ -56,47 +56,47 @@ OrchidSense is a web application that monitors environmental conditions such as 
 ![Login](path-to-screenshots/login.png)
 
 ### Dashboard - Real-Time Data Monitoring
-![Real-Time Data](path-to-screenshots/dados_em_tempo_real.png)
+![Real-Time Data](static/assets/screenshots/dados_em_tempo_real.png)
 
 ### Graphs of Temperature and Humidity Over Time
-![Graphs - Temperature and Humidity](path-to-screenshots/dados_em_tempo_real_graficos_temp_hum.png)
+![Graphs - Temperature and Humidity](static/assets/screenshots/dados_em_tempo_real_graficos_temp_hum.png)
 
 ### Graphs of Light Intensity Over Time
-![Graphs - Light Intensity](path-to-screenshots/dados_em_tempo_real_graficos_lux.png)
+![Graphs - Light Intensity](static/assets/screenshots/dados_em_tempo_real_graficos_lux.png)
 
 ### Analysis and Reports - Main Page
-![Reports Main Page](path-to-screenshots/analises_e_relatorios_main.png)
+![Reports Main Page](static/assets/screenshots/analises_e_relatorios_main.png)
 
 ### Hourly Graph for Environmental Data
-![Hourly Graph](path-to-screenshots/analises_e_relatorios_grafico_horario.png)
+![Hourly Graph](static/assets/screenshots/analises_e_relatorios_grafico_horario.png)
 
 ### Export Reports
-![Export Reports](path-to-screenshots/analises_e_relatorios_export.png)
+![Export Reports](static/assets/screenshots/analises_e_relatorios_export.png)
 
 ### Orchid Library
-![Orchid Library](path-to-screenshots/biblioteca_de_orquideas.png)
+![Orchid Library](static/assets/screenshotss/biblioteca_de_orquideas.png)
 
 ### Alerts and Notifications - List View
-![List of Alerts](path-to-screenshots/alertas_e_notificacoes_list.png)
+![List of Alerts](static/assets/screenshots/alertas_e_notificacoes_list.png)
 
 ### Alerts and Notifications - Add Configuration
 ![Add Alert Configuration](path-to-screenshots/alertas_e_notificacoes_add_config.png)
 
 ### Alerts and Notifications - Edit Configuration
-![Edit Alert Configuration](path-to-screenshots/alertas_e_notificacoes_edit.png)
+![Edit Alert Configuration](static/assets/screenshots/alertas_e_notificacoes_edit.png)
 
 
 ### Device Management
-![Device Management](path-to-screenshots/gestao_de_dispositivos.png)
+![Device Management](static/assets/screenshots/gestao_de_dispositivos.png)
 
 ### User List
-![User List](path-to-screenshots/gestao_de_utilizadores_list.png)
+![User List](static/assets/screenshots/gestao_de_utilizadores_list.png)
 
 ### Add New User
-![Add User](path-to-screenshots/gestao_de_utilizadores_add_user.png)
+![Add User](static/assets/screenshots/gestao_de_utilizadores_add_user.png)
 
 ### Edit User Information
-![Edit User](path-to-screenshots/gestao_de_utilizadores_edit_user.png)
+![Edit User](static/assets/screenshots/gestao_de_utilizadores_edit_user.png)
 
 
 
